@@ -168,7 +168,7 @@ find_critical_point_coordinates=function(direction,off,steps,phi,rejection_sampl
   # Next, assert that each set of critical points per direction is equal (to ensure phi is small enough). Recall that this is for the five
   # directions in the cone around the input.
   if (length(crit_points)==0){
-    print('No Critical Points!')
+    #print('No Critical Points!')
     return(0)
   }
   if (length(crit_points)!=5){
@@ -206,8 +206,8 @@ find_critical_point_coordinates=function(direction,off,steps,phi,rejection_sampl
         # solve the critical point equation
         solution=try(gaussianElimination(A = direction_matrix, B=as.matrix(paired_crit_points)))
         if(inherits(solution,'try-error')){
-          print(direction_matrix)
-          print(matrix(paired_crit_points))
+          #print(direction_matrix)
+          #print(matrix(paired_crit_points))
           solution=gaussianElimination(A = direction_matrix[1:length(paired_crit_points),], B=as.matrix(paired_crit_points))
           xs=c(xs,solution[1,4])
           ys=c(ys,solution[2,4])
