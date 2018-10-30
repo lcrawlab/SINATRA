@@ -24,6 +24,7 @@ While the usage of the code will be explained in the simulation scripts, we prov
 	
 `bean$Vertices` will return the coordinates of the vertices of the bean; `bean$Faces, bean$Edges` return the indices of the vertices that make up the face or edge respectively. We also need to create a plot of the object for visualization purposes.
 
+	
 	bean_plot <- vcgImport('bean_off_file')
 
 To open a 3D plot, we can use:
