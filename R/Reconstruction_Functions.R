@@ -168,7 +168,7 @@ find_critical_point_coordinates=function(direction,off,steps,phi,rejection_sampl
   # Next, assert that each set of critical points per direction is equal (to ensure phi is small enough). Recall that this is for the five
   # directions in the cone around the input.
   if (length(crit_points)==0){
-    print('No Critical Points!')
+    #print('No Critical Points!')
     return(0)
   }
   if (length(crit_points)!=5){
@@ -206,8 +206,8 @@ find_critical_point_coordinates=function(direction,off,steps,phi,rejection_sampl
         # solve the critical point equation
         solution=try(gaussianElimination(A = direction_matrix, B=as.matrix(paired_crit_points)))
         if(inherits(solution,'try-error')){
-          print(direction_matrix)
-          print(matrix(paired_crit_points))
+          #print(direction_matrix)
+          #print(matrix(paired_crit_points))
           solution=gaussianElimination(A = direction_matrix[1:length(paired_crit_points),], B=as.matrix(paired_crit_points))
           xs=c(xs,solution[1,4])
           ys=c(ys,solution[2,4])
@@ -535,6 +535,51 @@ create_hull_kde=function(points,vertices,n,color='blue',alpha=0.3,plot_points=FA
     }
   }
 }
+
+
+plot_complex_with_points_simple=function(points,vertices,n=5,main_color='white',vert_colors,alpha_one=0.5,alpha_two=0.3,off_file,axes=FALSE,labels=FALSE,plot_points=FALSE,hull=TRUE,point_size=5){
+  colors=rep(main_color,dim(off_file$vb)[2])
+  vertices=t(off_file$vb)[,1:3]
+  plot3d(off_file,xlab='',ylab='',zlab='',type=c('shade'),col=colors,alpha=alpha_one,axes=axes,labels=labels)
+  aspect3d(1,1,1)
+  if (hull==TRUE){
+    if (length(points)!=0){
+      create_hull_on_shape(points=points,vertices,n=n,colors=vert_colors,alpha = alpha_two,plot_points=plot_points)
+    }
+  }
+  else{
+    plot_points(points,point_size=point_size,point_color=crit_colors)
+  }
+}
+
+find_evidence_colors=function(dir,complex,indices,len){
+
+  evidence <- matrix(0,nrow = dim(complex$Vertices)[1], ncol = dim(dir)[1])
+
+  # Count how many projections are selected for
+  for(i in 1:dim(dir)[1]){
+    projections <- complex$Vertices[,1:3]%*%dir[i,]
+    buckets <- seq(min(projections),max(projections),length.out = len)
+
+    #bucket these projections into curve_length number of groups; could have also solved this with the cut function
+    step_length <- (max(projections) - min(projections))/len
+    projection_buckets <- apply((projections - min(projections))/step_length,1, function(float) as.integer(float)) + len*(i-1)
+    evidence[,i] <- sapply(projection_buckets %in% indices,as.numeric)
+  }
+
+  vertex_evidence <- rowSums(evidence)
+  #cols=rainbow(len(unique(vertex_evidence)))[vertex_evidence]
+
+  colfunc <- colorRampPalette(c("white", 'white','white',"blue"))
+  colors=colfunc(max(vertex_evidence))[vertex_evidence]
+  plot(rep(1,max(vertex_evidence)),col=colfunc(max(vertex_evidence)),pch=19,cex=3)
+  return(colors)
+
+}
+
+
+
+
 
 
 
