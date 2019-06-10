@@ -1,0 +1,5 @@
+"0","dragon <- vcgImport(""vignettes/dragon.off"")
+"
+"2","Error in vcgImport(""vignettes/dragon.off"") : 
+  file vignettes/dragon.off does not exist
+"

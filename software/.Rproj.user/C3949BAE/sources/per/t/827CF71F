@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559933741343.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4257219258",
+    "id" : "827CF71F",
+    "lastKnownWriteTime" : 1558205178,
+    "last_content_update" : 1558205178,
+    "path" : "~/projects/Research/SINATRA/athena_simulations/R_scripts/Sphere_Simulations/Generate_ROC.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "103,86",
+        "scrollLine" : "69"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559760085965.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "866211089",
+    "id" : "72214744",
+    "lastKnownWriteTime" : 1559867995,
+    "last_content_update" : 1559867995089,
+    "path" : "~/projects/Research/SINATRA/Simulations/kernel_choice_simulation.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "50,57",
+        "scrollLine" : "19",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
