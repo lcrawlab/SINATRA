@@ -1,0 +1,86 @@
+---
+title: "simulated_sphere_ROC"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{simulated_sphere_ROC}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(sinatra)
+library(truncnorm)
+library(doParallel)
+library(svd)
+library(numbers)
+```
+
+```{r parameters }
+### Set the parameters for the analysis ###
+set.seed(4913, kind = "L'Ecuyer-CMRG")
+n.simulations <- 5
+
+num_causal_region <- arguments[1]
+num_shared_region <- arguments[2]
+causal_points <- arguments[3]
+shared_points <- arguments[3]
+```
+
+```{r generate roc}
+### Setup DoParallel ###
+no_cores <- detectCores() 
+cl <- makeCluster(no_cores, type="FORK")  
+registerDoParallel(cl)  
+
+### Run the analysis in Parallel ###
+simulation_results <- foreach(i=1:n.simulations, .combine = 'rbind', .noexport = c('GaussKernel')) %:% 
+  foreach(j=c(1,10,20,30), .combine = 'rbind', .noexport = c('GaussKernel')) %dopar% {
+    
+    set.seed(9*i+j)
+    
+    res <- tryCatch( generate_ROC_with_coned_directions(nsim = 10, curve_length = 30, grid_size = 25, distance_to_causal_point = 0.1, 
+                                                        causal_points = causal_points,shared_points = shared_points, desired_num_cones = j, eta = 0.1, 
+                                                        truncated = 250, two_curves = TRUE, ball = TRUE, ball_radius = 1.5, type = 'vertex',
+                                                        min_points = 3, directions_per_cone = 5, cap_radius = 0.15, radius = 1,ec_type = 'ECT',
+                                                        mode = 'sphere', fpr = 0.05, start = 1, cusps = 50,
+                                                        subdivision = 3,num_causal_region = num_causal_region, num_shared_region = num_shared_region),
+                     error = function(x) {
+                       return(matrix(nrow = 0,ncol = 3))
+                     }
+    )
+    ### Label the results for each trial and directions ###
+    rdf <- cbind(res, rep(j, dim(res)[1]) )
+    rdf <- data.frame(cbind(rdf,rep(i,dim(rdf)[1])))
+    rdf <- plyr::rename(rdf,c("X1" = "FPR","X2" = "TPR","X3" = "Class","X4" = "Index","X5" = "Num_Cones","X6" = "Trial"))
+  }
+
+stopCluster(cl)
+```
+
+
+```{r plot}
+rdfmeans <- aggregate(simulation_results[c("FPR","TPR")],
+                      by = list("Num_Cones" = simulation_results$Num_Cones,
+                                "Index" = simulation_results$Index,
+                                "Class" = simulation_results$Class), mean)             
+
+rdfmeans$Num_Cones <- as.factor(rdfmeans$Num_Cones)
+
+### Plot results ###
+ROC_curve_plt <- ggplot(data <- rdfmeans[rdfmeans$Class == 1,],aes(x = FPR, y = TPR, color = Num_Cones)) +
+  geom_line(stat = "identity") +
+  labs(x = "FPR (False Positive Rate)", y = "TPR (True Positive Rate)", color = "# Cones") +
+  ggtitle(sprintf("3 Causal Regions, 6 Shared Regions, Size 10")) +
+  geom_abline(intercept = 0, slope = 1) + 
+  coord_equal(ratio=1) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+print(ROC_curve_plt)
+```
