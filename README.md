@@ -2,16 +2,16 @@
 Sub-Image Analysis using Topological Summary Statistics.
 
 ## Introduction
-The Sub-Image Selection problem is to identify the regions of a collection of three dimensional objects that are most causal for predicting a given response.
+The sub-image selection problem is to identify physical regions that most explain the variation between two classes of three dimensional shapes.
 
-SINATRA is a pipeline for analyzing the sub image problem using topological summary statistics. The method can be decomposed into the following steps:
+SINATRA is a statistical pipeline for carrying out sub-image analyses using topological summary statistics. The algorithm follows four key steps:
 
-1. Represent the object in question by a collection of vectors, by topological summary statistics such as the [Smooth Euler Characteristic Transform](https://arxiv.org/abs/1611.06818). 
-2. Perform a variable selection algorithm on the transformed shape.
-3. Reconstruct the regions corresponding to the selected features from the second step.
+1. 3D shapes (represented as triangular meshes) are summarized by a collection of vectors (or curves) detailing their topology (e.g. [Smooth Euler Characteristic Transform](https://arxiv.org/abs/1611.06818)). 
+2. A statistical model is used to classify the shapes based on their topological summaries.
+3. After itting the model, an association measure is computed for each topological feature (e.g. centrality measures, posterior inclusion probabilities, p-values, etc.).
+4. Association measures are mapped back onto the original shapes via a reconstruction algorithm — thus, highlighting evidence of the physical (spatial) locations that best explain the variation between the two groups.
 
-
-As an application of our method, we study the problem of classifying molars of New World Monkeys by diet; using SINATRA, we identify the most important regions on these teeth for predicting the diet of these New World Monkeys. The dataset was first curated by Doug M. Boyer. 
+As an application of our method, we classify molars of New World Monkeys based on their phylogeny. Using SINATRA, we identify the most important regions on these teeth for predicting the diet of these New World Monkeys. The dataset was first curated by Doug M. Boyer. 
 
 ## Package Requirements
 
