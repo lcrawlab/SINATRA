@@ -1,7 +1,9 @@
 # SINATRA 
+
 Sub-Image Analysis using Topological Summary Statistics.
 
 ## Introduction
+
 The sub-image selection problem is to identify physical regions that most explain the variation between two classes of three dimensional shapes.
 
 SINATRA is a statistical pipeline for carrying out sub-image analyses using topological summary statistics. The algorithm follows four key steps:
@@ -11,28 +13,30 @@ SINATRA is a statistical pipeline for carrying out sub-image analyses using topo
 3. After itting the model, an association measure is computed for each topological feature (e.g. centrality measures, posterior inclusion probabilities, p-values, etc.).
 4. Association measures are mapped back onto the original shapes via a reconstruction algorithm — thus, highlighting evidence of the physical (spatial) locations that best explain the variation between the two groups.
 
-As an application of our method, we classify molars of New World Monkeys based on their phylogeny. Using SINATRA, we identify the most important regions on these teeth for predicting the diet of these New World Monkeys. The dataset was first curated by Doug M. Boyer. 
+Through detailed simulations, we assess the power of our algorithm as a function of its inputs. Lastly, as an application of our pipeline, we conduct feature selection on a dataset consisting of mandibular molars from different genera of New World Monkeys and examine the physical properties of their teeth that summarize their phylogeny. 
 
-## Package Requirements
+## Package Details and Requirements
 
-While any feature selection algorithm can be used, we use the procedure called [RATE](https://github.com/lorinanthony/RATE), a variable selection algorithm for nonlinear models using Relative Centrality. Other alternatives considered in the text include [Elastic Net](https://cran.r-project.org/web/packages/elasticnet/elasticnet.pdf) and Bayesian variable selection using variational inference ([varbvs](https://cran.r-project.org/web/packages/varbvs/index.html)). 
+While our pipeline is flexible and any feature selection algorithm can be implemented, we use the relative centrality criterion ([RATE](https://github.com/lorinanthony/RATE)), which is a variable selection measure for nonlinear and nonparametric statistical methods (Crawford et al. 2019, Ish-Horowicz et al. 2019). Alternative methods implemented include the [elastic net](https://cran.r-project.org/web/packages/elasticnet/elasticnet.pdf) (Zou and Hastie 2003) and Bayesian variable selection using variational inference ([varbvs](https://cran.r-project.org/web/packages/varbvs/index.html)) (Carbonetto, Zhou, and Stephens 2017). 
 
-The package also requires the use of the package `rgl`, which requires X11 or XQuartz on Mac.
+The SINATRA software also requires the use of the package `rgl`, which requires X11 or XQuartz on Mac.
 
-## Download
+## R Package Download
 
-To download the package, checkout the repo and within the directory, run the command
+To download the package, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command
 
 	devtools::install('software') 
 	
-and load the package with
+Next, to load the package, use the command
 
-	library(sinatra).
+	library(sinatra)
 
 ## Code Usage
-The SINATRA pipeline can be divided into several steps:
 
-### Data Vectorization
+Details of our implementation choices for the SINATRA algorithm are detailed below.
+
+### Topological Summary Statistics for 3D Shapes
+
 We convert our dataset into a matrix by measuring topological summary statistics of the shapes in the dataset. After picking a set of direction on which to measure the Euler characteristic of our shapes, we run the function
 
 	compute_standardized_ec_curve.
