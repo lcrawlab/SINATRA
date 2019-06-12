@@ -25,11 +25,11 @@ Note that the package `rgl` requires X11 or XQuartz on macOS systems.
 
 ## R Package Download
 
-To download the package, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command
+To download the package, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command:
 
 	devtools::install('software') 
 	
-Next, to load the package, use the command
+Next, to load the package, use the command:
 
 	library(sinatra)
 
@@ -41,7 +41,7 @@ Other details of our implementation choices for the SINATRA algorithm are provid
 
 ### Topological Summary Statistics for 3D Shapes
 
-In the first step of the SINATRA pipeline, we use a tool from differential geometry called the Euler characteristic (EC) transform (Turner, Mukherjee, and Boyer 2014; Crawford et al. 2017; Ghrist, Levanger, and Mai 2018) to represent 3D shapes as a collection of vector-valued topological summary statistics. To do so, after picking a set of directions on which to measure the ECs of each shape in our data, the algorithm runs the function `compute_standardized_ec_curve.`
+In the first step of the SINATRA pipeline, we use a tool from differential geometry called the Euler characteristic (EC) transform (Turner, Mukherjee, and Boyer 2014; Crawford et al. 2017; Ghrist, Levanger, and Mai 2018) to represent 3D shapes as a collection of vector-valued topological summary statistics. To do so, after picking a set of directions on which to measure the ECs of each shape in our data, the algorithm runs the function `compute_standardized_ec_curve`.
 	
 If desired, resulting EC curve can then be transformed --- either smoothened or differentiated --- by using the function `update_ec_curve`.
 	
