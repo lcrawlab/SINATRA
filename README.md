@@ -39,7 +39,7 @@ Other common installation procedures may also apply.
 
 ## Code Usage
 
-Details of our implementation choices for the SINATRA algorithm are provided below.
+Other details of our implementation choices for the SINATRA algorithm are provided below.
 
 ### Topological Summary Statistics for 3D Shapes
 
@@ -49,41 +49,26 @@ If desired, resulting EC curve can then be transformed --- either smoothened or 
 	
 For each shape in the dataset, EC curves are computed in every direction and then concatenated into a *p*-dimensional topological feature vector. For a study with *n*-shapes, we analayze an *n × p* design matrix, where the columns denote the Euler characteristic computed at a given filtration step and direction combination.
 
-###  Inference using a Gaussian Process model and RATE for variable selection.
+###  Gaussian Process Classification and Variable Selection
 
-We are interested with classifying two classes of shapes. For this purpose we set up a Gaussian Process model relating the EC curve matrix to the class labels. The EC curve matrix is comprised of *features* which are exactly the Euler characteristic values of sublevel sets in various directions.
+Recall we are interested in identifying physical features that best differentiate two classes of shapes. For this purpose, we use Gaussian process classification model to assess the relationship between topological summary statistics and the variance between class labels. To perform variable selection on these statistics, we use relative centrality measures: a criterion which evaluates how much information about the shape classification is lost when a particular topological feature is missing from the model.
 
-To perform variable selection on this model, we use a measure of centrality called RATE (Crawford, 2019) -- each feature is assigned a normalized value, representing its importance.
+Keeping ECs with centrality measures above a certain threshold then determines a selected set worth further investigation.
 
-Thresholding the features above a certain RATE value then determines a feature selection method.
+### Reconstruction of the Selected Sub-Image
 
-The inference step and RATE step are done within the function
+After obtaining a select set of topological features, we map this information back onto the physical shape using the function `compute_selected_vertices_cones`. This generates the sub-image on a given shape in our dataset.
 
-	find_rate_variables_with_other_sampling_methods
-
-### Reconstruction of the selected subimage.
-
-We then map back the selected features via the function
-
-	compute_selected_vertices_cones.
-	
-This generates the subimage on a given shape in our dataset.
-
-Alternatively, the function
-
-	reconstruct_vertices_on_shape
-	
-generates a heatmap on the shape which can be interpreted as the importance of each subset of the shape with respect to the outcome, in this case the class label.
+Alternatively, the function `reconstruct_vertices_on_shape` generates a heatmap on the shape which can be interpreted as visualizing the importance of each subset of Euler characteristics with respect to the class labels.
  
-### Vignettes
+### Available Vignettes
+
 Usage of the code is best understood by viewing the examples in `software/vignettes`. We provide examples of running the full pipeline on the following cases:
 
 - Simulated shapes as in the manuscript.
 - Imported OFF files of very different shapes.
 - Generating power curves for simulated shapes.
 - Datasets of primate molars.
-
-
 
 ## Relevant Citations
 
