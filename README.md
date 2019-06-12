@@ -4,9 +4,7 @@ Sub-Image Analysis using Topological Summary Statistics.
 
 ## Introduction
 
-The sub-image selection problem is to identify physical regions that most explain the variation between two classes of three dimensional shapes.
-
-SINATRA is a statistical pipeline for carrying out sub-image analyses using topological summary statistics. The algorithm follows four key steps:
+The sub-image selection problem is to identify physical regions that most explain the variation between two classes of three dimensional shapes. SINATRA is a statistical pipeline for carrying out sub-image analyses using topological summary statistics. The algorithm follows four key steps:
 
 1. 3D shapes (represented as triangular meshes) are summarized by a collection of vectors (or curves) detailing their topology (e.g. [Smooth Euler Characteristic Transform](https://arxiv.org/abs/1611.06818)). 
 2. A statistical model is used to classify the shapes based on their topological summaries. Here, we make use of a Gaussian process classification model with a probit link function.
@@ -63,12 +61,18 @@ Alternatively, the function `reconstruct_vertices_on_shape` generates a heatmap 
  
 ### Available Vignettes
 
-Usage of the code is best understood by viewing the examples in `software/vignettes`. We provide examples of running the full pipeline on the following cases:
+Implementation of the code may be best understood by viewing the examples in `software/vignettes`. We provide tutorials for running the full SINATRA pipeline via the following cases:
 
-- Simulated shapes as in the manuscript.
-- Imported OFF files of very different shapes.
-- Generating power curves for simulated shapes.
-- Datasets of primate molars.
+- Simulations with perturbed spheres and shape caricaturizations;
+- Simulations with shapes generated under the null hypothesis of relative centrality;
+- How to generate power curves for simulated shapes;
+- Real data analyses with primate molars.
+
+Other code specific to analyses conducted in the paper can be found in the branch `SINATRA/paper_results`.
+
+## Questions and Feedback
+
+For questions or concerns, please contact [Bruce Wang](mailto:bruce.waang55@gmail.com), [Timothy Sudijono](mailto:timothy_sudijono@brown.edu), or [Lorin Crawford](mailto:lorin_crawford@brown.edu). We appreciate any feedback you may have with our repository and instructions.
 
 ## Relevant Citations
 
