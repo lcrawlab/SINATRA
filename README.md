@@ -25,7 +25,10 @@ Note that the package `rgl` requires X11 or XQuartz on macOS systems.
 
 ## R Package Download
 
-To download the package, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command:
+To download the package, first clone the repo. From the command line:
+	git clone https://github.com/lcrawlab/SINATRA/
+
+Then if you do not have devtools, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command:
 
 	devtools::install('{directory_where_you_cloned_sinatra}/SINATRA/sinatra') 
 	
