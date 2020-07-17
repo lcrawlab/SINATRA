@@ -30,7 +30,7 @@ To download the package, first clone the repo. From the command line:
 
 Then if you do not have devtools, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command:
 
-	devtools::install('{directory_where_you_cloned_sinatra}/SINATRA/sinatra') 
+	devtools::install('{directory_where_you_cloned_sinatra}/SINATRA/software') 
 	
 Next, to load the package, use the command:
 
