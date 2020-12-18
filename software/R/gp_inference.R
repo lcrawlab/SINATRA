@@ -19,7 +19,7 @@ GaussKernel <- function(X,bandwidth){
   K <- matrix(0,nrow = n, ncol = n)
   for(i in 1:n){
     for(j in 1:n){
-        if(j >= i){
+        if(j > i){
           K[i,j] <- exp(-bandwidth*sum((X[,i] - X[,j])^2)/p)
         }
     }
