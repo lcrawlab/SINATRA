@@ -24,7 +24,9 @@ GaussKernel <- function(X,bandwidth){
         }
     }
   }
-  return(K + t(K))
+  K = K + t(K)
+  diag(K) = 1
+  return(K)
 }
 
 
