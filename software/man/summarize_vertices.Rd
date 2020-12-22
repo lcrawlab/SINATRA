@@ -4,9 +4,18 @@
 \alias{summarize_vertices}
 \title{Reconstruct Vertices in a Cone}
 \usage{
-summarize_vertices(dir, complex, rate_vals, len,
-  reduction_operation = intersect, threshold, cone_size, ball = TRUE,
-  ball_radius = 1, radius = 0)
+summarize_vertices(
+  dir,
+  complex,
+  rate_vals,
+  len,
+  reduction_operation = intersect,
+  threshold,
+  cone_size,
+  ball = TRUE,
+  ball_radius = 1,
+  radius = 0
+)
 }
 \arguments{
 \item{dir}{(nx3 matrix) : The matrix of directions in the cone that were used to compute the (S/D) EC curve over.}

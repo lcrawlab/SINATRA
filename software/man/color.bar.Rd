@@ -4,8 +4,14 @@
 \alias{color.bar}
 \title{Creates a color bar:}
 \usage{
-color.bar(lut, min, max = -min, nticks = 11, ticks = seq(min, max,
-  len = nticks), title = "")
+color.bar(
+  lut,
+  min,
+  max = -min,
+  nticks = 11,
+  ticks = seq(min, max, len = nticks),
+  title = ""
+)
 }
 \arguments{
 \item{lut}{(function) : The color scale.}

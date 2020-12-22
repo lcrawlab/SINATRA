@@ -5,8 +5,15 @@
 \title{Generate design matrix from meshes in two directories.
  @description Given two classes & directories, we generate the (S/D) EC curves and the associated class labels}
 \usage{
-create_comparison_matrix_mult_d(directory1, directory2, directions, len,
-  ball = FALSE, ball_radius = 1, ec_type = "ECT")
+create_comparison_matrix_mult_d(
+  directory1,
+  directory2,
+  directions,
+  len,
+  ball = FALSE,
+  ball_radius = 1,
+  ec_type = "ECT"
+)
 }
 \arguments{
 \item{directory1}{(string): The first directory corresponding to class 1.}

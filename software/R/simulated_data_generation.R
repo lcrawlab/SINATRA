@@ -1,11 +1,3 @@
-#library(Rcpp)
-#library(mvtnorm)
-#library(pdist)
-#library(MASS)
-#library(plyr)
-#library(reshape2)
-#library(FNN)
-
 # cusps are the equidistributed points on the sphere - the 'grid' points.
 
 #' Generate (S/D) EC curves for a collection of perturbed spheres
@@ -39,7 +31,7 @@
 #' and the metadata for locations of the cusps.
 generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points = 5,causal_points = 5, ball = TRUE, ball_radius = 2,
                                            ec_type = "ECT",subdivision = 3, cusps, causal_regions_1 = c(1), causal_regions_2 = c(3),
-                                           shared_regions = c(4)) {
+                                           shared_regions = c(4), write = FALSE, workdir = '~/Documents/spheres/v100') {
   data <- matrix(NA,nrow=0,ncol = 1+curve_length*( dim(dir)[1]) )
   regions =  generate_equidistributed_points(cusps,cusps)
 
@@ -104,6 +96,19 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
 
   ### Create the data ###
   for (i in 1:nsim){
+
+    if (write == TRUE){
+      workdir1 = paste(workdir,'/v1',sep = '')
+      workdir2 = paste(workdir,'/v2',sep = '')
+      if (dir.exists(workdir1) == FALSE){
+        dir.create(workdir1)
+      }
+      if (dir.exists(workdir2) == FALSE){
+        dir.create(workdir2)
+      }
+    }
+
+
     sphere1 = vcgSphere(subdivision = subdivision)
     sphere2 = vcgSphere(subdivision = subdivision)
 
@@ -132,6 +137,22 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
       sphere1$vb[1:3,closest_points_shared] = shared_points
       sphere2$vb[1:3,closest_points_shared] = shared_points
 
+    }
+
+    if (write == TRUE){
+      sphere1_name = paste(workdir1,'/sphere_',i,'.off',sep = '')
+      sphere2_name = paste(workdir2,'/sphere_',i,'.off',sep = '')
+      vcgOffWrite(sphere1, filename = sphere1_name)
+      vcgOffWrite(sphere2, filename = sphere2_name)
+
+      sphere1_vec = rep(0,dim(sphere1$vb)[2])
+      sphere2_vec = rep(0,dim(sphere1$vb)[2])
+
+      sphere1_vec[total_closest_points_class1] = 1
+      sphere2_vec[total_closest_points_class2] = 1
+
+      write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
+      write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
     }
 
 
@@ -190,6 +211,175 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
 
   return(data_list)
 }
+
+#' Generate Cooordinate Based Matrices for a collection of perturbed spheres
+#'
+#' @export
+#' @import Rvcg
+#' @import pdist
+#' @import FNN
+#'
+#' @description Given a set of input parameters, \code{create_data_sphere_simulation} generates replicates of perturbed spheres.
+#' Cusps are initialized by generating equidistributed points on the sphere. The cusps are created by taking the $k$ nearest vertices of these central points,
+#' and depending on if the cusps are causal or shared, the cusps are indented or made protruding out.
+#' These perturbed spheres are divided into different classes using the indented cusps.
+#' These spheres then have the (S/D) EC curve computed over to create the design matrix $X$.
+#'
+#' @param num_sim (int) : The number of replicates of data.
+#' @param curve_length (int) : Number of sub-level sets in each EC computation.
+#' @param dir (matrix) : The matrix of directions we compute the EC curves over.
+#' @param noise_points (int) : The number of shared points in each shared cusp.
+#' @param causal_points (int) : The number of class specific causal points in each causal cusp.
+#' @param ball (boolean) : Denotes whether or not to compute the EC curves over a ball for uniform measurements
+#' @param ball_radius (float) : The radius of the bounding ball used if we compute the balled EC curve.
+#' @param ec_type (string) : The type of EC we are computing. We currently support ECT, DECT and SECT.
+#' @param subdivision (int) : The fineness of the mesh. We currently use subdivision = 3.
+#' @param cusps (int) : The number of total cusps to be generated.
+#' @param causal_regions_1 (vector) : The index of cusps to be denoted as the central points for the causal cusps of class 1.
+#' @param causal_regions_2 (vector) : The index of cusps to be denoted as the central points for the causal cusps of class 2.
+#' @param shared_regions (vector) : The index of cusps to be denoted as the central points for the shared cusps for both classes.
+#'
+#' @return data_list (list) : List of procedure specific data : The associated (S/D) EC matrix, indices of the shared & causal vertices,
+#' and the metadata for locations of the cusps.
+
+generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, noise_points = 5, causal_points = 5,
+                                                     ball = TRUE, ball_radius = 2, ec_type = "ECT", subdivision = 3,
+                                                     cusps, causal_regions_1 = c(1), causal_regions_2 = c(3),
+                                                     shared_regions = c(4),write = FALSE, workdir = '~/Documents/spheres/v100')
+{
+  regions = generate_equidistributed_points(cusps, cusps)
+  sphere = vcgSphere(subdivision = subdivision)
+  print(paste("Causal Regions 1: "))
+  print(causal_regions_1)
+  print("Causal Regions 2: ")
+  print(causal_regions_2)
+  print("Shared Regions: ")
+  print(shared_regions)
+  complex_points = list()
+  shared_points_list = list()
+  total_shared_points = c()
+  total_closest_points_class1 = c()
+  total_closest_points_class2 = c()
+  total_cusps_list = c()
+  region_vertex_dictionary <- vector("list", dim(regions)[1])
+  sphere_vertices <- asEuclidean(t(sphere$vb))
+  distances <- as.matrix(pdist(regions, sphere_vertices))
+  for (i in 1:(dim(sphere_vertices))[1]) {
+    closest_region <- which.min(distances[, i])
+    region_vertex_dictionary[[closest_region]] <- c(region_vertex_dictionary[[closest_region]],
+                                                    i)
+  }
+  vertex_region_dictionary <- apply(distances, 2, FUN = which.min)
+  for (j in 1:length(causal_regions_1)) {
+    causal_dir1 = regions[causal_regions_1[j], ]
+    closest_points_class1 = knnx.index(data = t(sphere$vb[-4,
+                                                          ]), query = matrix(causal_dir1, ncol = 3), k = causal_points)
+    total_closest_points_class1 = c(total_closest_points_class1,
+                                    closest_points_class1)
+    total_cusps_list[[length(total_cusps_list) + 1]] = closest_points_class1
+  }
+  for (j in 1:length(causal_regions_2)) {
+    causal_dir2 = regions[causal_regions_2[j], ]
+    closest_points_class2 = knnx.index(data = t(sphere$vb[-4,
+                                                          ]), query = matrix(causal_dir2, ncol = 3), k = causal_points)
+    total_closest_points_class2 = c(total_closest_points_class2,
+                                    closest_points_class2)
+    total_cusps_list[[length(total_cusps_list) + 1]] = closest_points_class2
+  }
+  for (k in 1:length(shared_regions)) {
+    shared_dir = regions[shared_regions[k], ]
+    closest_points_shared = knnx.index(data = t(sphere$vb[-4,
+                                                          ]), query = matrix(shared_dir, ncol = 3), k = noise_points)
+    total_shared_points = c(total_shared_points, closest_points_shared)
+  }
+  data <- matrix(NA, nrow = 0, ncol = (1+length(sphere$vb)))
+  for (i in 1:nsim) {
+    if (write == TRUE){
+      workdir1 = paste(workdir,'/v1',sep = '')
+      workdir2 = paste(workdir,'/v2',sep = '')
+      if (dir.exists(workdir1) == FALSE){
+        dir.create(workdir1)
+      }
+      if (dir.exists(workdir2) == FALSE){
+        dir.create(workdir2)
+      }
+    }
+    sphere1 = vcgSphere(subdivision = subdivision)
+    sphere2 = vcgSphere(subdivision = subdivision)
+    sphere1$vb[1:3, ] = sphere1$vb[1:3, ] * rnorm(dim(sphere1$vb)[2],
+                                                  mean = 1, sd = 0.035)
+    sphere2$vb[1:3, ] = sphere2$vb[1:3, ] * rnorm(dim(sphere2$vb)[2],
+                                                  mean = 1, sd = 0.035)
+    for (j in 1:length(causal_regions_1)) {
+      causal_dir1 = regions[causal_regions_1[j], ]
+      closest_points_class1 = knnx.index(data = t(sphere$vb[-4,
+                                                            ]), query = matrix(causal_dir1, ncol = 3), k = causal_points)
+      sphere1$vb[1:3, closest_points_class1] = sphere1$vb[1:3,
+                                                          closest_points_class1] * 0.55 + rnorm(1, mean = 0,
+                                                                                                sd = 0.1)
+    }
+    for (j in 1:length(causal_regions_2)) {
+      causal_dir2 = regions[causal_regions_2[j], ]
+      closest_points_class2 = knnx.index(data = t(sphere$vb[-4,
+                                                            ]), query = matrix(causal_dir2, ncol = 3), k = causal_points)
+      sphere2$vb[1:3, closest_points_class2] = sphere2$vb[1:3,
+                                                          closest_points_class2] * 0.55 + rnorm(1, mean = 0,
+                                                                                                sd = 0.1)
+    }
+    for (k in 1:length(shared_regions)) {
+      shared_dir = regions[shared_regions[k], ]
+      closest_points_shared = knnx.index(data = t(sphere$vb[-4,
+                                                            ]), query = matrix(shared_dir, ncol = 3), k = noise_points)
+      shared_points = sphere$vb[1:3, closest_points_shared] *
+        1.35 + rnorm(1, mean = 0, sd = 0.1)
+      sphere1$vb[1:3, closest_points_shared] = shared_points
+      sphere2$vb[1:3, closest_points_shared] = shared_points
+    }
+    if (write == TRUE){
+      sphere1_name = paste(workdir1,'/sphere_',i,'.off',sep = '')
+      sphere2_name = paste(workdir2,'/sphere_',i,'.off',sep = '')
+      vcgOffWrite(sphere1, filename = sphere1_name)
+      vcgOffWrite(sphere2, filename = sphere2_name)
+
+      sphere1_vec = rep(0,dim(sphere1$vb)[2])
+      sphere2_vec = rep(0,dim(sphere1$vb)[2])
+
+      sphere1_vec[total_closest_points_class1] = 1
+      sphere2_vec[total_closest_points_class2] = 1
+
+      write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
+      write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
+
+    }
+    sphere_mesh1 = convert_off_file(sphere1)
+    sphere_mesh2 = convert_off_file(sphere2)
+    complex_points[[(2 * i - 1)]] = t(sphere1$vb[1:3, ])
+    complex_points[[2 * i]] = t(sphere2$vb[1:3, ])
+    shared_points_list[[i]] = shared_points
+    ec_curve_class1 <- matrix(NA, nrow = 1, ncol = 0)
+    ec_curve_class2 <- matrix(NA, nrow = 1, ncol = 0)
+    #    for (j in 1:dim(dir)[1]) {
+    #      vertex_function_class_1 <- sphere_mesh1$Vertices %*%
+    #        c(dir[j, 1], dir[j, 2], dir[j, 3])
+    #      vertex_function_class_2 <- sphere_mesh2$Vertices %*%
+    #        c(dir[j, 1], dir[j, 2], dir[j, 3])
+    curve1 = mesh_to_matrix(sphere1)
+    curve2 = mesh_to_matrix(sphere2)
+    #    print(length(curve1))
+    ec_curve_class1 <- c(ec_curve_class1, curve1)
+    ec_curve_class2 <- c(ec_curve_class2, curve2)
+    #    print(length(ec_curve_class1))
+    #}
+    data <- rbind(data, c(1, ec_curve_class1))
+    data <- rbind(data, c(-1, ec_curve_class2))
+  }
+  data_list = list(data = data, noise = total_shared_points,
+                   causal_points1 = total_closest_points_class1, causal_points2 = total_closest_points_class2,
+                   complex_points = complex_points, shared_points_list = shared_points_list,
+                   total_cusps_list = total_cusps_list, region_vertex_dict = region_vertex_dictionary,
+                   vertex_region_dict = vertex_region_dictionary)
+  return(data_list)
+}
 #' Generate (S/D) EC curves for a collection of interpolations on the plane
 #'
 #' @export
@@ -214,8 +404,8 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
 #'
 #'
 create_data_normal_fixed = function(num_sim=25,dir,curve_length=10,shared_points=5,causal_points=5,
-                                  grid_size=25,func=rbf_gauss,eta=5,ball = TRUE, ball_radius = 1,
-                                  ec_type = "ECT"){
+                                    grid_size=25,func=rbf_gauss,eta=5,ball = TRUE, ball_radius = 1,
+                                    ec_type = "ECT"){
 
   data <- matrix(NA,nrow=0,ncol = 1+curve_length*( dim(dir)[1]) )
   #Shared points
@@ -345,7 +535,7 @@ generate_data_gaussian_field <- function(nsim, curve_length, dir, shared_points 
   complex_points=list()
   for (i in 1:nsim){
     total_complex=generate_gaussian_field(grid_size = grid_size, shared_points = noise_points, causal_points1 = causal_points1,
-                                                causal_points2 = causal_points2, 0.01)
+                                          causal_points2 = causal_points2, 0.01)
     if(inherits(total_complex,'try-error')){
       i=i-1
       next
@@ -644,4 +834,3 @@ sum_normals <- function(test_point, points, normal_std){
 
   sum(functions)/10 #for renormalization
 }
-

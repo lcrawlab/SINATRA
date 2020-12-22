@@ -4,8 +4,17 @@
 \alias{reconstruct_faces_on_shape}
 \title{Computes the  birth times of the faces on the shape.}
 \usage{
-reconstruct_faces_on_shape(dir, complex, rate_vals, len, cuts = 10,
-  cone_size, ball_radius, ball = TRUE, radius = 0)
+reconstruct_faces_on_shape(
+  dir,
+  complex,
+  rate_vals,
+  len,
+  cuts = 10,
+  cone_size,
+  ball_radius,
+  ball = TRUE,
+  radius = 0
+)
 }
 \arguments{
 \item{dir}{(nx3 matrix):  The matrix of directions for which the (S/D) EC curve were computed over.}

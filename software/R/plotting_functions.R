@@ -47,6 +47,10 @@ reconstruct_vertices_on_shape = function(dir, complex, rate_vals, len, cuts=10, 
   cut = cuts
   reconstructed_vertices = c()
   for (threshold in quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
+    if (threshold > max(rate_vals)){
+      next
+    }
+    else{
       selected_vertices = compute_selected_vertices_cones(dir = dir, complex = complex, rate_vals = rate_vals, len = len, threshold = threshold,
                                                           cone_size = cone_size,ball_radius = ball_radius, ball = ball, radius = radius)
       selected_vertices = setdiff(selected_vertices,reconstructed_vertices)
@@ -54,10 +58,11 @@ reconstruct_vertices_on_shape = function(dir, complex, rate_vals, len, cuts=10, 
       vert_matrix[selected_vertices,2] = threshold
       cut = cut-1
       reconstructed_vertices = c(reconstructed_vertices,selected_vertices)
-      if (length(reconstructed_vertices) == dim(complex$Vertices)[1]){
-        break
-      }
-}
+    }
+    if (length(reconstructed_vertices) == dim(complex$Vertices)[1]){
+      break
+    }
+  }
   return(vert_matrix)
 }
 
@@ -83,17 +88,17 @@ reconstruct_faces_on_shape = function(dir, complex, rate_vals, len, cuts=10, con
   cut = cuts
   reconstructed_faces = c()
   for (threshold in quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
-      selected_faces = compute_selected_faces_cones(dir = dir, complex = complex, rate_vals = rate_vals, len = len, threshold = threshold,
-                                                          cone_size = cone_size,ball_radius = ball_radius, ball = ball, radius = radius)
-      selected_faces = setdiff(selected_faces,reconstructed_faces)
-      face_matrix[selected_faces,1] = cut
-      face_matrix[selected_faces,2] = threshold
-      cut = cut-1
-      reconstructed_faces = c(reconstructed_faces,selected_faces)
-      if (length(reconstructed_faces) == dim(complex$Faces)[1]){
-        break
-      }
-}
+    selected_faces = compute_selected_faces_cones(dir = dir, complex = complex, rate_vals = rate_vals, len = len, threshold = threshold,
+                                                  cone_size = cone_size,ball_radius = ball_radius, ball = ball, radius = radius)
+    selected_faces = setdiff(selected_faces,reconstructed_faces)
+    face_matrix[selected_faces,1] = cut
+    face_matrix[selected_faces,2] = threshold
+    cut = cut-1
+    reconstructed_faces = c(reconstructed_faces,selected_faces)
+    if (length(reconstructed_faces) == dim(complex$Faces)[1]){
+      break
+    }
+  }
   return(face_matrix)
 }
 
@@ -117,7 +122,7 @@ get_heat_colors = function(dir_name, cuts, pset, comp, colfunc){
     print(paste('On File', file_name))
     mesh = process_off_file_v3(file_name)
     heat = reconstruct_vertices_on_shape(dir = pset$dirs,complex = mesh,rate_vals = comp$Rate2[,2],
-                                                len = pset$len,cuts = cuts,cone_size = pset$directions_per_cone,ball_radius = ball_radius, ball = ball,radius =1)
+                                         len = pset$len,cuts = cuts,cone_size = pset$directions_per_cone,ball_radius = ball_radius, ball = ball,radius =1)
     heat_colors = colfunc(1 + max(heat[,1]) - min(heat[,1]))[1 + heat[,1] - min(heat[,1])]
     mesh_list[[k]] = heat_colors
   }
@@ -239,4 +244,3 @@ plot_results_teeth_simple=function(files, features1, features2, color1, color2, 
     rgl.viewpoint(userMatrix = rotation_matrix)
   }
 }
-

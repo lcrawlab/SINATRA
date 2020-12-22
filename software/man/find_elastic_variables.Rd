@@ -4,7 +4,13 @@
 \alias{find_elastic_variables}
 \title{Conducts the Lasso Feature Selection}
 \usage{
-find_elastic_variables(data, radius = 0, weights = FALSE)
+find_elastic_variables(
+  data,
+  radius = 0,
+  weights = FALSE,
+  grouped_data = TRUE,
+  alpha = 0.5
+)
 }
 \arguments{
 \item{data}{(nxm matrix) A nxm matrix containing the covariates and responses.}

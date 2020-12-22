@@ -4,8 +4,12 @@
 \alias{compute_discrete_ec_curve}
 \title{Computes the EC curve relative to the shape}
 \usage{
-compute_discrete_ec_curve(complex, vertex_function, curve_length,
-  first_column_index = FALSE)
+compute_discrete_ec_curve(
+  complex,
+  vertex_function,
+  curve_length,
+  first_column_index = FALSE
+)
 }
 \arguments{
 \item{complex}{(list) : The list containing metadata about the mesh; use \code{process_off_filev3} to obtain this list from an off file, or
