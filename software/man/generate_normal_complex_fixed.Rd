@@ -4,8 +4,14 @@
 \alias{generate_normal_complex_fixed}
 \title{Generate Kernel interpolated meshes.}
 \usage{
-generate_normal_complex_fixed(grid_size = 25, noise_points,
-  causal_points1, causal_points2, func = rbf_gauss, eta = 5)
+generate_normal_complex_fixed(
+  grid_size = 25,
+  noise_points,
+  causal_points1,
+  causal_points2,
+  func = rbf_gauss,
+  eta = 5
+)
 }
 \arguments{
 \item{grid_size}{(int) : The fineness of the grid for which the interpolation is on.}

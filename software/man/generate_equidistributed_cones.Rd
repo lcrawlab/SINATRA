@@ -4,8 +4,7 @@
 \alias{generate_equidistributed_cones}
 \title{Generate Equidistributed Cones}
 \usage{
-generate_equidistributed_cones(num_directions, cap_radius,
-  directions_per_cone)
+generate_equidistributed_cones(num_directions, cap_radius, directions_per_cone)
 }
 \arguments{
 \item{num_directions}{(int): The number of equidistributed directions we want on the sphere.}

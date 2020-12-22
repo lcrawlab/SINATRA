@@ -4,8 +4,13 @@
 \alias{compute_standardized_ec_curve}
 \title{Computes the EC curve on a ball}
 \usage{
-compute_standardized_ec_curve(complex, vertex_function, curve_length,
-  first_column_index = FALSE, ball_radius)
+compute_standardized_ec_curve(
+  complex,
+  vertex_function,
+  curve_length,
+  first_column_index = FALSE,
+  ball_radius
+)
 }
 \arguments{
 \item{complex}{(list) : The list containing metadata about the mesh; use \code{process_off_filev3} to obtain this list from an off file, or

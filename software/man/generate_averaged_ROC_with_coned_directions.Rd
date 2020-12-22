@@ -4,14 +4,35 @@
 \alias{generate_averaged_ROC_with_coned_directions}
 \title{Generates ROC curve averaged over multiple runs.}
 \usage{
-generate_averaged_ROC_with_coned_directions(runs = 5, nsim = 50,
-  curve_length = 10, grid_size = 25, distance_to_causal_point = 0.1,
-  causal_points = 10, shared_points = 3, num_cones = 5, eta = 0.1,
-  truncated = FALSE, two_curves = FALSE, ball_radius = 2,
-  ball = TRUE, type = "vertex", min_points = 2,
-  directions_per_cone = 5, cap_radius = 0.15, radius = 0,
-  mode = "sphere", subdivision = 3, num_causal_region = 5,
-  num_shared_region = 5, ec_type = "ECT")
+generate_averaged_ROC_with_coned_directions(
+  runs = 5,
+  nsim = 50,
+  curve_length = 10,
+  grid_size = 25,
+  distance_to_causal_point = 0.1,
+  causal_points = 10,
+  shared_points = 3,
+  num_cones = 5,
+  eta = 0.1,
+  truncated = FALSE,
+  two_curves = FALSE,
+  ball_radius = 2,
+  ball = TRUE,
+  type = "vertex",
+  min_points = 2,
+  directions_per_cone = 5,
+  cap_radius = 0.15,
+  radius = 0,
+  mode = "sphere",
+  num_cusps = 10,
+  subdivision = 3,
+  num_causal_region = 5,
+  num_shared_region = 5,
+  ec_type = "ECT",
+  alpha = 0.5,
+  reduce = max,
+  write = FALSE
+)
 }
 \arguments{
 \item{runs}{(int): Number of runs to average the curves over}

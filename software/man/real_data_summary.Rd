@@ -4,8 +4,21 @@
 \alias{real_data_summary}
 \title{Creates Design Matrix and Run Rate}
 \usage{
-real_data_summary(dir1, dir2, direction = dir, len = len,
-  ec_type = "ECT", ball = TRUE, ball_radius = 1.5)
+real_data_summary(
+  shape_transformation,
+  dir1,
+  dir2,
+  base_shape_dir,
+  direction = dir,
+  len = len,
+  ec_type = "ECT",
+  ball = TRUE,
+  ball_radius = 1.5,
+  mode = "rate",
+  reduce = max,
+  alpha = 0.5,
+  num_landmarks = 100
+)
 }
 \arguments{
 \item{dir1}{(string): The first directory corresponding to class 1.}

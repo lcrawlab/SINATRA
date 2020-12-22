@@ -4,10 +4,23 @@
 \alias{compute_roc_curve_teeth_vertex}
 \title{Computes the ROC curve by assessing the overlap of reconstructed vertices and causal vertices on the teeth.}
 \usage{
-compute_roc_curve_teeth_vertex(data_dir, gamma, class_1_probs,
-  class_2_probs, rate_values, directions_per_cone, curve_length,
-  directions, truncated = 0, class = 0, ball_radius = ball_radius,
-  ball = TRUE, radius = 0)
+compute_roc_curve_teeth_vertex(
+  data_dir,
+  gamma,
+  class_1_probs,
+  class_2_probs,
+  rate_values,
+  directions_per_cone,
+  curve_length,
+  directions,
+  truncated = 0,
+  class = 0,
+  ball_radius = ball_radius,
+  ball = TRUE,
+  radius = 0,
+  mode = "teeth",
+  base_shape_dir
+)
 }
 \arguments{
 \item{data_dir}{(string) : Location of the meshes.}

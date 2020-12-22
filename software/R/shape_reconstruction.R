@@ -106,8 +106,8 @@ summarize_vertices=function(dir,complex,rate_vals,len,reduction_operation=inters
   picked_indices=which(rate_vals>=threshold)
   indices=c()
   for (j in 0:radius){
-      indices=c(indices,picked_indices+j)
-      indices=c(indices,picked_indices-j)
+    indices=c(indices,picked_indices+j)
+    indices=c(indices,picked_indices-j)
   }
   selected_vertices=list()
 
@@ -136,4 +136,85 @@ summarize_vertices=function(dir,complex,rate_vals,len,reduction_operation=inters
   return(final_selected_vertices)
 }
 
+#' Compute a null distribution for function values on a region of a mesh
+#'
+#' @description Input a region on the mesh, and the function finds N other connected regions of the same size, uniformly sampled from the
+#' mesh. The goal is to compare the function values on the input region to those on the N other regions in order to generate the analog of p values.
+#'
+#'
+#' @export
+#'
+#' @import Rvcg
+#' @import FNN
+#' @import Matrix
+#'
+#' @param mesh mesh3d object.
+#' @param mesh_fcn (1 x M vector) the values of the function on the vertices of the mesh.
+#' @param vertex (int) the index of the desired vertex to analyze on the mesh
+#' @param region_size (int) the number of vertices to be in the region. We choose the region via knn. The assumption is that the
+#'  density if vertices in the mesh is uniform, or at least approximately.
+#' @param num_test_regions (int) the number of regions to sample from
+#' @param method (string)  the method to use when creating null regions. We currently support 'area' and 'knn'.
+#'
+#' @return sum of function values for the input region, and a vector of length N of the sum of function values for the random test regions
 
+compute_differential_evidence = function(complex,mesh_fcn,vertex, region_size = 100, num_test_regions = 100, method = 'knn'){
+  region <- knnx.index(data = t(complex$vb[-4,]),query = t(complex$vb[-4,vertex]), k = region_size)
+  region_val <- sum(mesh_fcn[region])
+  nv = nverts(complex)
+  nf = nfaces(complex)
+  I = cbind(matrix(complex$it[1,], nrow = 1),matrix(complex$it[2,],nrow = 1), matrix(complex$it[3,],nrow =1))
+  J = matrix(rep(1:nf, 3),nrow = 1)
+  f2v = sparseMatrix(i = J,j = I,x = 1,dims = c(nf,nv))
+
+  face_area = vcgArea(complex, TRUE)$pertriangle
+
+  vert_area = ((face_area%*% f2v)/3)[1,]
+
+  roi_mask = rep(0,length(vert_area))
+  roi_mask[region] = 1
+
+  # select random regions
+  random_regions <- sample(1:dim(complex$vb)[2], num_test_regions)
+  random_region_vals <- matrix(0,nrow = 1, ncol = num_test_regions)
+
+  #Compute Area for the ROI
+  roi_area = sum(vert_area * roi_mask)
+
+  for (i in 1:num_test_regions){
+    random_vertex <- random_regions[i]
+    #Compute the region matching based on the "Knn"
+    if (method == 'knn'){
+      random_region <- knnx.index(data = t(complex$vb[-4,]),query = t(complex$vb[-4,random_vertex]), k = region_size)
+    }
+    if (method == 'area'){
+      knn = region_size
+      random_region = knnx.index(data = t(complex$vb[-4,]),query = t(complex$vb[-4,random_vertex]), k = knn)
+      random_mask = rep(0,length(vert_area))
+      random_mask[random_region] = 1
+      base_area = sum(random_mask * vert_area)
+
+      if (base_area < roi_area){
+        while(base_area < roi_area){
+          random_region = knnx.index(data = t(complex$vb[-4,]),query = t(complex$vb[-4,random_vertex]), k = knn)
+          random_mask = rep(0,length(vert_area))
+          random_mask[random_region] = 1
+          base_area = sum(random_mask * vert_area)
+          knn = knn + 1
+        }
+      }
+      else{
+        while(base_area > roi_area && knn > 1){
+          random_region = knnx.index(data = t(complex$vb[-4,]),query = t(complex$vb[-4,random_vertex]), k = knn)
+          random_mask = rep(0,length(vert_area))
+          random_mask[random_region] = 1
+          base_area = sum(random_mask * vert_area)
+          knn = knn - 1
+        }
+      }
+    }
+    random_region_vals[i] <- sum(mesh_fcn[random_region])
+  }
+  return(c(region_val,random_region_vals))
+
+}

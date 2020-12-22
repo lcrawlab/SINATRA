@@ -4,8 +4,7 @@
 \alias{Elliptical_Slice_Sampling}
 \title{Draw samples from posterior using Elliptical Slice Sampling}
 \usage{
-Elliptical_Slice_Sampling(K, class_labels, num_mcmc_samples,
-  probit = TRUE)
+Elliptical_Slice_Sampling(K, class_labels, num_mcmc_samples, probit = TRUE)
 }
 \description{
 @export
@@ -13,12 +12,12 @@ Elliptical_Slice_Sampling(K, class_labels, num_mcmc_samples,
 \details{
 @import FastGP
 
-@description  \code{Elliptical_Slice_Sampling} Based on Iain Murray's paper 'Elliptical Slice Sampling'. Implemented using the FastGP package. The function returns
+  @description  \code{Elliptical_Slice_Sampling} Based on Iain Murray's paper 'Elliptical Slice Sampling'. Implemented using the FastGP package. The function returns
 the desired number of mcmc samples
  @param K (matrix): the covariance matrix of the GP model
  @param class_labels (vector): the class labels for each data point, +/- 1.
  @param num_mcmc_samples (int): the number of desired mcmc samples to be returned
  @param probit (boolean): set TRUE if the link function in the model is probit; otherwise the function uses the logistic link.
 
-@return samples (vector): Vector of Samples obtained from ESS sampling.
+ @return samples (vector): Vector of Samples obtained from ESS sampling.
 }

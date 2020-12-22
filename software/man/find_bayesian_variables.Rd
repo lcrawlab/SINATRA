@@ -4,8 +4,7 @@
 \alias{find_bayesian_variables}
 \title{Conducts the Bayesian Feature Selection}
 \usage{
-find_bayesian_variables(data, param = 0.5, radius = 0,
-  weights = FALSE)
+find_bayesian_variables(data, param = 0.5, radius = 0, weights = FALSE)
 }
 \arguments{
 \item{data}{(nxm matrix) A nxm matrix containing the covariates and responses.}

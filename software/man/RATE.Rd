@@ -4,9 +4,17 @@
 \alias{RATE}
 \title{Predictor Prioritization via RelATive cEntrality (RATE) centrality measures ###}
 \usage{
-RATE(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL,
-  prop.var = 1, rank.r = min(nrow(X), ncol(X)), nullify = NULL,
-  snp.nms = NULL, cores = 1)
+RATE(
+  X,
+  f.draws = NULL,
+  pre.specify = FALSE,
+  beta.draws = NULL,
+  prop.var = 1,
+  rank.r = min(nrow(X), ncol(X)),
+  nullify = NULL,
+  snp.nms = NULL,
+  cores = 1
+)
 }
 \arguments{
 \item{X'}{is the nxp design matrix (e.g. genotypes) where n is the number of samples and p is the number of dimensions. This is the original input data}

@@ -4,13 +4,35 @@
 \alias{generate_ROC_with_coned_directions}
 \title{This function generates an ROC curve using the cone reconstruction idea.}
 \usage{
-generate_ROC_with_coned_directions(nsim = 10, curve_length = 25,
-  grid_size = 25, distance_to_causal_point = 0.1, causal_points = 10,
-  shared_points = 3, num_cones = 5, eta = 0.1, truncated = 300,
-  two_curves = TRUE, ball = TRUE, ball_radius = 2.5,
-  type = "vertex", min_points = 3, directions_per_cone = 4,
-  cap_radius = 0.15, radius = 0, ec_type = "ECT", mode = "sphere",
-  subdivision = 3, num_causal_region = 5, num_shared_region = 5)
+generate_ROC_with_coned_directions(
+  nsim = 10,
+  curve_length = 25,
+  grid_size = 25,
+  distance_to_causal_point = 0.1,
+  causal_points = 10,
+  shared_points = 3,
+  num_cones = 5,
+  eta = 0.1,
+  num_cusps = 10,
+  truncated = 300,
+  two_curves = TRUE,
+  ball = TRUE,
+  ball_radius = 2.5,
+  type = "vertex",
+  min_points = 3,
+  directions_per_cone = 4,
+  cap_radius = 0.15,
+  radius = 0,
+  ec_type = "ECT",
+  mode = "sphere",
+  subdivision = 3,
+  num_causal_region = 5,
+  num_shared_region = 5,
+  alpha = 0.5,
+  reduce = max,
+  write = FALSE,
+  workdir = "~/Documents/spheres"
+)
 }
 \arguments{
 \item{nsim}{(int) : The number of replicates of data.}

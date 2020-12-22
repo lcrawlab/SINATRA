@@ -4,8 +4,11 @@
 \alias{find_rate_variables_with_other_sampling_methods}
 \title{Derive Rate Values}
 \usage{
-find_rate_variables_with_other_sampling_methods(gp_data,
-  bandwidth = 0.01, type = "Laplace")
+find_rate_variables_with_other_sampling_methods(
+  gp_data,
+  bandwidth = 0.01,
+  type = "Laplace"
+)
 }
 \arguments{
 \item{gp_data}{(matrix) : The design matrix of (S/D) EC curves and the associated class labels}

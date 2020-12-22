@@ -4,8 +4,17 @@
 \alias{compute_selected_faces_cones}
 \title{Reconstruct Faces}
 \usage{
-compute_selected_faces_cones(dir, complex, rate_vals, len,
-  threshold = -1, cone_size, ball = TRUE, ball_radius, radius = 0)
+compute_selected_faces_cones(
+  dir,
+  complex,
+  rate_vals,
+  len,
+  threshold = -1,
+  cone_size,
+  ball = TRUE,
+  ball_radius,
+  radius = 0
+)
 }
 \arguments{
 \item{dir}{(nx3 matrix) The matrix of directions that were used to compute the (S/D) EC curve over.}

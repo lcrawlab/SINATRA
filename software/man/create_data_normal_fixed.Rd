@@ -4,10 +4,19 @@
 \alias{create_data_normal_fixed}
 \title{Generate (S/D) EC curves for a collection of interpolations on the plane}
 \usage{
-create_data_normal_fixed(num_sim = 25, dir, curve_length = 10,
-  shared_points = 5, causal_points = 5, grid_size = 25,
-  func = rbf_gauss, eta = 5, ball = TRUE, ball_radius = 1,
-  ec_type = "ECT")
+create_data_normal_fixed(
+  num_sim = 25,
+  dir,
+  curve_length = 10,
+  shared_points = 5,
+  causal_points = 5,
+  grid_size = 25,
+  func = rbf_gauss,
+  eta = 5,
+  ball = TRUE,
+  ball_radius = 1,
+  ec_type = "ECT"
+)
 }
 \arguments{
 \item{num_sim}{(int) : The number of replicates of data.}

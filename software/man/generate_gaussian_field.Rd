@@ -4,8 +4,13 @@
 \alias{generate_gaussian_field}
 \title{Place Gaussian Bumps on a Plane}
 \usage{
-generate_gaussian_field(grid_size = 25, shared_points, causal_points1,
-  causal_points2, normal_std)
+generate_gaussian_field(
+  grid_size = 25,
+  shared_points,
+  causal_points1,
+  causal_points2,
+  normal_std
+)
 }
 \arguments{
 \item{grid_size}{(int): the fineness of the grid.}

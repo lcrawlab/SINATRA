@@ -4,11 +4,25 @@
 \alias{compute_roc_curve_vertex}
 \title{Computes the ROC curve by assessing the overlap of reconstructed vertices and causal vertices.}
 \usage{
-compute_roc_curve_vertex(data, class_1_causal_points,
-  class_2_causal_points, distance_to_causal_point = 0.1, rate_values,
-  grid_size, eta = 0.1, directions_per_cone, curve_length, directions,
-  truncated = -1, class = 0, ball_radius = ball_radius,
-  ball = TRUE, radius = 0, mode = "sphere", subdivision = 3)
+compute_roc_curve_vertex(
+  data,
+  class_1_causal_points,
+  class_2_causal_points,
+  distance_to_causal_point = 0.1,
+  rate_values,
+  grid_size,
+  eta = 0.1,
+  directions_per_cone,
+  curve_length,
+  directions,
+  truncated = -1,
+  class = 0,
+  ball_radius = ball_radius,
+  ball = TRUE,
+  radius = 0,
+  mode = "sphere",
+  subdivision = 3
+)
 }
 \arguments{
 \item{data}{(list) : Metadata about the simulated shapes (vertex coordinates, etc.)}

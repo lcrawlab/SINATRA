@@ -4,8 +4,14 @@
 \alias{create_ec_matrix_mult_d}
 \title{Create EC matrix from meshes.}
 \usage{
-create_ec_matrix_mult_d(directory, directions, len, ball_radius = 1,
-  ball = FALSE, ec_type = "ECT")
+create_ec_matrix_mult_d(
+  directory,
+  directions,
+  len,
+  ball_radius = 1,
+  ball = FALSE,
+  ec_type = "ECT"
+)
 }
 \arguments{
 \item{directory}{(string): :  The input directory of the meshes.}

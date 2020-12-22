@@ -4,10 +4,24 @@
 \alias{compute_roc_curve_teeth}
 \title{Computes the averaged ROC curve of caricatured teeth.}
 \usage{
-compute_roc_curve_teeth(data_dir1, data_dir2, gamma, class_1_probs,
-  class_2_probs, rate_values, directions_per_cone, curve_length,
-  directions, truncated = 0, ball_radius = ball_radius, ball = TRUE,
-  radius = 0, two_curves = FALSE)
+compute_roc_curve_teeth(
+  data_dir1,
+  data_dir2,
+  gamma,
+  class_1_probs,
+  class_2_probs,
+  rate_values,
+  directions_per_cone,
+  curve_length,
+  directions,
+  truncated = 0,
+  ball_radius = ball_radius,
+  ball = TRUE,
+  radius = 0,
+  two_curves = FALSE,
+  mode = "teeth",
+  base_shape_dir = base_shape_dir
+)
 }
 \arguments{
 \item{data_dir1}{(string) : Location of the first class of meshes.}

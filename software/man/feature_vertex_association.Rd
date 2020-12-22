@@ -4,8 +4,7 @@
 \alias{feature_vertex_association}
 \title{Returns a list that displays the relation of sub-level sets to vertices.}
 \usage{
-feature_vertex_association(dir, complex, len, ball_radius = 0,
-  ball = FALSE)
+feature_vertex_association(dir, complex, len, ball_radius = 0, ball = FALSE)
 }
 \arguments{
 \item{dir}{(nx3 matrix):  The matrix of directions for which the (S/D) EC curve were computed over.}

@@ -4,8 +4,12 @@
 \alias{calculate_TPR_FPR}
 \title{TPR/FPR}
 \usage{
-calculate_TPR_FPR(positive_vertices, negative_vertices, true_vertices,
-  false_vertices)
+calculate_TPR_FPR(
+  positive_vertices,
+  negative_vertices,
+  true_vertices,
+  false_vertices
+)
 }
 \description{
 TPR/FPR

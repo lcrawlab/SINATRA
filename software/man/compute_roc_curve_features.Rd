@@ -4,12 +4,25 @@
 \alias{compute_roc_curve_features}
 \title{Computes the ROC curve by assessing the overlap of selected features and causal features.}
 \usage{
-compute_roc_curve_features(data, class_1_causal_points,
-  class_2_causal_points, distance_to_causal_point = 0.1, rate_values,
-  grid_size, eta = 0.1, directions_per_cone, curve_length,
-  truncated = -1, class = 0, ball = TRUE,
-  ball_radius = ball_radius, dir, min_points = 2, mode = "grid",
-  subdivision = 3)
+compute_roc_curve_features(
+  data,
+  class_1_causal_points,
+  class_2_causal_points,
+  distance_to_causal_point = 0.1,
+  rate_values,
+  grid_size,
+  eta = 0.1,
+  directions_per_cone,
+  curve_length,
+  truncated = -1,
+  class = 0,
+  ball = TRUE,
+  ball_radius = ball_radius,
+  dir,
+  min_points = 2,
+  mode = "grid",
+  subdivision = 3
+)
 }
 \arguments{
 \item{data}{(list) : Metadata about the simulated shapes (vertex coordinates, etc.)}
