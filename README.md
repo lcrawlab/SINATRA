@@ -26,6 +26,7 @@ Note that the package `rgl` requires X11 or XQuartz on macOS systems.
 ## R Package Download
 
 To download the package, first clone the repo. From the command line:
+	
 	git clone https://github.com/lcrawlab/SINATRA/
 
 Then if you do not have devtools, install [devtools](https://cran.r-project.org/web/packages/devtools/index.html) and run the command:
@@ -44,7 +45,7 @@ Other details of our implementation choices for the SINATRA algorithm are provid
 
 ### Topological Summary Statistics for 3D Shapes
 
-In the first step of the SINATRA pipeline, we use a tool from differential geometry called the Euler characteristic (EC) transform (Turner, Mukherjee, and Boyer 2014; Crawford et al. 2017; Ghrist, Levanger, and Mai 2018) to represent 3D shapes as a collection of vector-valued topological summary statistics. To do so, after picking a set of directions on which to measure the ECs of each shape in our data, the algorithm runs the function `compute_standardized_ec_curve`.
+In the first step of the SINATRA pipeline, we use a tool from differential geometry called the Euler characteristic (EC) transform (Turner, Mukherjee, and Boyer 2014; Ghrist, Levanger, and Mai 2018; Crawford et al. 2020) to represent 3D shapes as a collection of vector-valued topological summary statistics. To do so, after picking a set of directions on which to measure the ECs of each shape in our data, the algorithm runs the function `compute_standardized_ec_curve`.
 	
 If desired, resulting EC curve can then be transformed --- either smoothened or differentiated --- by using the function `update_ec_curve`.
 	
@@ -79,4 +80,4 @@ For questions or concerns, please contact [Bruce Wang](mailto:bruce.waang55@gmai
 
 ## Relevant Citations
 
-B. Wang*, T. Sudijono*, H. Kirveslahti*, T. Gao, D.M. Boyer, S. Mukherjee, and L. Crawford. SINATRA: a sub-image analysis pipeline for selecting features that differentiate classes of 3D shapes. _bioRxiv_. 701391.
+B. Wang*, T. Sudijono*, H. Kirveslahti*, T. Gao, D.M. Boyer, S. Mukherjee, and L. Crawford. SINATRA: a sub-image analysis pipeline for selecting features that differentiate classes of 3D shapes. _Annals of Applied Statistics_. In Press.
