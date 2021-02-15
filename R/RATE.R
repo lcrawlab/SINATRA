@@ -10,7 +10,7 @@
 #NOTE: As decribed in the Supplementary Material of Crawford et al. (2018), we implement different matrix factorizations
 #for two cases: (i) n > p, and (ii) n < p. Again, n is the number of samples and p is the number of predictors.
 
-#' @importFrom doParallel %dopar%
+#' @importFrom foreach %dopar%
 RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.var =1, rank.r = min(nrow(X),ncol(X)), nullify = NULL,snp.nms = NULL, cores = 1){
   j = NULL
   rm(list="j")
