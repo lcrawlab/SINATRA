@@ -219,7 +219,7 @@ plot_results_teeth_simple=function(files, features1, features2, color1, color2, 
   #Loop through files in the directory
   for (i in 1:length(files)){
     #We set direction as (0,0.75,1)
-    file1=vcgImport(files[i])
+    file1=Rvcg::vcgImport(files[i])
     file_1=process_off_file_v3(files[i])
     #Try to see if this file has any critical points, if it doesn't just plot the tooth.
     vert1 = compute_selected_vertices_cones(dir = dir1, complex =file_1, rate_vals = features1, len = len, threshold = (thresh/(length(features1))),

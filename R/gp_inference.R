@@ -376,7 +376,7 @@ optimize_params_EP <- function(X, class_labels, initial_params){
   fn <- function(param) compute_marginal_likelihood(X,param,class_labels)
   gr <- function(param) compute_marginal_likelihood_gradient(X,param,class_labels)
 
-  return(Rcgmin(initial_params, fn, gr))
+  return(Rcgmin::Rcgmin(initial_params, fn, gr))
 }
 
 
@@ -478,7 +478,7 @@ find_elastic_variables=function(data,radius=0,weights=FALSE, grouped_data = TRUE
   if(grouped_data == FALSE) {
     regression_model=glmnet::cv.glmnet(data[,-1], data[,1], alpha = alpha,intercept = TRUE,family='binomial') # need groups added here
     #Extract the coefficients
-    tmp_coeffs = as.matrix(coef(regression_model, s = "lambda.min"))
+    tmp_coeffs = as.matrix(stats::coef(regression_model, s = "lambda.min"))
     regression_coeff= as.vector(tmp_coeffs)
   } else {
     groups <- rep(1:(dim(data)[2]/3),each = 3)
@@ -489,7 +489,7 @@ find_elastic_variables=function(data,radius=0,weights=FALSE, grouped_data = TRUE
     #browser()
     # plot(lasso)
     plot(model)
-    regression_coeff <- as.matrix(coef(model, s = 'lambda.min'))
+    regression_coeff <- as.matrix(stats::coef(model, s = 'lambda.min'))
 
   }
 
@@ -532,9 +532,9 @@ find_lasso_variables=function(data,radius=0,weights=FALSE){
   #Transforming the data to -1, and 1 if it isn't already for logistic regression purposes.
   data[,1]=ifelse(data[,1]>0,1,0)
   #Initialize lasso model
-  regression_model=cv.glmnet(data[,-1], data[,1], alpha = 0.95,intercept = FALSE,family='binomial')
+  regression_model=glmnet::cv.glmnet(data[,-1], data[,1], alpha = 0.95,intercept = FALSE,family='binomial')
   #Extract the coefficients of the variables.
-  tmp_coeffs = as.matrix(coef(regression_model,s=regression_model$lambda.1se))
+  tmp_coeffs = as.matrix(stats::coef(regression_model,s=regression_model$lambda.1se))
   regression_coeff=as.vector(tmp_coeffs)
   #Don't include the intercept.
   regression_coeff=regression_coeff[2:length(regression_coeff)]

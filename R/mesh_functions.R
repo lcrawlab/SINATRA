@@ -39,7 +39,7 @@ create_ec_matrix_mult_d=function(directory,directions,len,ball_radius = 1, ball 
   file_names=list.files(path=directory,full.names = TRUE)
   file_names = file_names[stringr::str_detect(file_names,'off')]
   number_files=length(file_names)
-  nvertices =  length(mesh_to_matrix(vcgImport(file_names[1])))
+  nvertices =  length(mesh_to_matrix(Rvcg::vcgImport(file_names[1])))
   if (ec_type == 'baseline'){
     data <- matrix(NA,nrow=number_files,ncol = nvertices)
   }
@@ -50,7 +50,7 @@ create_ec_matrix_mult_d=function(directory,directions,len,ball_radius = 1, ball 
     print(paste('On File', i))
     off=process_off_file_v3(file_names[i])
     if (ec_type == 'baseline'){
-      mesh = vcgImport(file_names[i])
+      mesh = Rvcg::vcgImport(file_names[i])
       curve = mesh_to_matrix(mesh)
       data[i,] <- curve
     }
@@ -147,7 +147,7 @@ create_landmark_summary=function(directory, landmark_indices){
   data <- matrix(NA,nrow=number_files,ncol = 3*length(landmark_indices))
   #browser()
   for (i in 1:number_files){
-    mesh = vcgImport(file_names[i])
+    mesh = Rvcg::vcgImport(file_names[i])
     curve = matrix(t(t(mesh$vb)[landmark_indices,1:3]), nrow = 1)
     # mfrow3d(1, 1, byrow = TRUE)
     # rgl::plot3d(t(mesh$vb)[landmark_indices,1:3])
@@ -202,7 +202,7 @@ real_data_summary = function(shape_transformation, dir1,dir2,base_shape_dir,dire
     print(dim(rate_values))
     rate_values[,1] = rep((1:(dim(rate_values)[1]/3)),each = 3)
     #browser()
-    new_df = aggregate(rate_values[,2],list(rate_values[,1]),reduce)
+    new_df = stats::aggregate(rate_values[,2],list(rate_values[,1]),reduce)
     want_indices = new_df$x
 
   }

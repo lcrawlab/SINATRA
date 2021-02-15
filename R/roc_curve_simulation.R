@@ -476,7 +476,7 @@ compute_roc_curve_vertex = function(data,class_1_causal_points,class_2_causal_po
     # can also recover the case where we add rate values one at a time by taking length.out to be the number of rate values.
     if (truncated == -1){
       #      print(length(rate_values))
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
 
         #sink("/dev/null")
         rate_positive_vertices <- compute_selected_vertices_cones(dir = directions, complex = complex, rate_vals = rate_values,
@@ -524,7 +524,7 @@ compute_roc_curve_vertex = function(data,class_1_causal_points,class_2_causal_po
     }
     else{
       #      print(length(rate_values))
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = truncated))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = truncated))){
 
 
         rate_positive_vertices<- compute_selected_vertices_cones(dir = directions, complex = complex, rate_vals = rate_values,
@@ -702,7 +702,7 @@ compute_roc_curve_modified_vertex = function(data,class_1_causal_points,class_2_
     # build the ROC by varying the ROC; we bucket the rate values into quantiles and select the thresholds that way; should make length.out = 1000, or higher
     # can also recover the case where we add rate values one at a time by taking length.out to be the number of rate values.
     if (truncated == 0){
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
 
 
         rate_positive_vertices<- compute_selected_vertices_cones(dir = directions, complex = complex, rate_vals = rate_values,
@@ -726,7 +726,7 @@ compute_roc_curve_modified_vertex = function(data,class_1_causal_points,class_2_
       }
     }
     else{
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = truncated))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = truncated))){
 
 
         rate_positive_vertices<- compute_selected_vertices_cones(dir = directions, complex = complex, rate_vals = rate_values,
@@ -882,7 +882,7 @@ compute_roc_curve_features <- function(data,class_1_causal_points,class_2_causal
       next
     }
     if (truncated == 0){
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
         selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
         #rate_positive_features = c(empty_list,intersect(positive_features, selected_features))
@@ -894,7 +894,7 @@ compute_roc_curve_features <- function(data,class_1_causal_points,class_2_causal
       }
     }
     else{
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = truncated))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = truncated))){
 
         selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
@@ -1107,7 +1107,7 @@ compute_roc_curve_cones <- function(data,class_1_causal_points,class_2_causal_po
       next
     }
     if (truncated == 0){
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
         selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
         rate_positive_reconstructions = c()
@@ -1130,7 +1130,7 @@ compute_roc_curve_cones <- function(data,class_1_causal_points,class_2_causal_po
       }
     }
     else{
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = truncated))){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = truncated))){
 
         selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
@@ -1310,7 +1310,7 @@ compute_roc_curve_teeth_vertex = function(data_dir,gamma,class_1_probs,class_2_p
     # can also recover the case where we add rate values one at a time by taking length.out to be the number of rate values.
     if (truncated == 0){
 
-      for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
+      for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values))) ){
 
         if (mode =='landmark'){
           rate_positive_vertices = which(rate_values >= threshold)
@@ -1355,7 +1355,7 @@ compute_roc_curve_teeth_vertex = function(data_dir,gamma,class_1_probs,class_2_p
       }
     }
     else{
-      vec = quantile(unique(rate_values),probs = seq(1,0,length.out = length(rate_values)))
+      vec = stats::quantile(unique(rate_values),probs = seq(1,0,length.out = length(rate_values)))
       #vec = rev(seq(min(rate_values),max(rate_values),length.out = truncated))
       # vec = quantile(rate_values,probs = seq(1,0,length.out = truncated))
       vec[truncated] = -0.01

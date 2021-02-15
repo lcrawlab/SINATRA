@@ -36,7 +36,7 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
   regions =  generate_equidistributed_points(cusps,cusps)
 
   #Initiate the causal points
-  sphere = vcgSphere(subdivision = subdivision)
+  sphere = Rvcg::vcgSphere(subdivision = subdivision)
 
   #closest_points_class2 = closest_points_class1
   print(paste('Causal Regions 1: '))
@@ -59,7 +59,8 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
   sphere_vertices <- asEuclidean(t(sphere$vb))
 
   #get distances between regions and vertices
-  distances <- as.matrix(pdist(regions,sphere_vertices))
+  # !!! THERE ARE MULTIPLE PDIST - make sure his is right one
+  distances <- as.matrix(pdist::pdist(regions,sphere_vertices))
 
   for (i in 1:(dim(sphere_vertices))[1]){
     closest_region <- which.min(distances[,i])
@@ -74,7 +75,7 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
   # iterate through class 1
   for (j in 1:length(causal_regions_1)){
     causal_dir1 = regions[causal_regions_1[j],]
-    closest_points_class1 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir1,ncol = 3), k = causal_points)
+    closest_points_class1 = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir1,ncol = 3), k = causal_points)
     total_closest_points_class1 = c(total_closest_points_class1,closest_points_class1)
     total_cusps_list[[length(total_cusps_list) + 1]] = closest_points_class1
 
@@ -83,14 +84,14 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
   # iterate through class 2
   for (j in 1:length(causal_regions_2)){
     causal_dir2 = regions[causal_regions_2[j],]
-    closest_points_class2 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir2,ncol = 3), k = causal_points)
+    closest_points_class2 = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir2,ncol = 3), k = causal_points)
     total_closest_points_class2 = c(total_closest_points_class2,closest_points_class2)
     total_cusps_list[[length(total_cusps_list) + 1]] = closest_points_class2
   }
 
   for (k in 1:length(shared_regions)){
     shared_dir = regions[shared_regions[k],]
-    closest_points_shared = knnx.index(data = t(sphere$vb[-4,]),query = matrix(shared_dir,ncol = 3), k = noise_points)
+    closest_points_shared = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(shared_dir,ncol = 3), k = noise_points)
     total_shared_points = c(total_shared_points,closest_points_shared)
   }
 
@@ -109,8 +110,8 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
     }
 
 
-    sphere1 = vcgSphere(subdivision = subdivision)
-    sphere2 = vcgSphere(subdivision = subdivision)
+    sphere1 = Rvcg::vcgSphere(subdivision = subdivision)
+    sphere2 = Rvcg::vcgSphere(subdivision = subdivision)
 
     # Add noise to the sphere
     sphere1$vb[1:3,] = sphere1$vb[1:3,]  * stats::rnorm(dim(sphere1$vb)[2], mean = 1, sd = 0.035)
@@ -119,20 +120,20 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
     # Descend the causal regions - Needs to be changed
     for (j in 1:length(causal_regions_1)){
       causal_dir1 = regions[causal_regions_1[j],]
-      closest_points_class1 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir1,ncol = 3), k = causal_points)
+      closest_points_class1 = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir1,ncol = 3), k = causal_points)
       sphere1$vb[1:3,closest_points_class1] = sphere1$vb[1:3,closest_points_class1]  * 0.55 + stats::rnorm(1, mean = 0, sd = 0.1)
     }
 
     for (j in 1:length(causal_regions_2)){
       causal_dir2 = regions[causal_regions_2[j],]
-      closest_points_class2 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir2,ncol = 3), k = causal_points)
+      closest_points_class2 = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir2,ncol = 3), k = causal_points)
       sphere2$vb[1:3,closest_points_class2] = sphere2$vb[1:3,closest_points_class2]  * 0.55 + stats::rnorm(1, mean = 0, sd = 0.1)
     }
 
     # Elevate the shared regions - Needs to be changed
     for (k in 1:length(shared_regions)){
       shared_dir = regions[shared_regions[k],]
-      closest_points_shared = knnx.index(data = t(sphere$vb[-4,]),query = matrix(shared_dir,ncol = 3), k = noise_points)
+      closest_points_shared = FNN::knnx.index(data = t(sphere$vb[-4,]),query = matrix(shared_dir,ncol = 3), k = noise_points)
       shared_points = sphere$vb[1:3,closest_points_shared]  * 1.35 + stats::rnorm(1, mean = 0, sd = 0.1)
       sphere1$vb[1:3,closest_points_shared] = shared_points
       sphere2$vb[1:3,closest_points_shared] = shared_points
@@ -142,8 +143,8 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
     if (write == TRUE){
       sphere1_name = paste(workdir1,'/sphere_',i,'.off',sep = '')
       sphere2_name = paste(workdir2,'/sphere_',i,'.off',sep = '')
-      vcgOffWrite(sphere1, filename = sphere1_name)
-      vcgOffWrite(sphere2, filename = sphere2_name)
+      Rvcg::vcgOffWrite(sphere1, filename = sphere1_name)
+      Rvcg::vcgOffWrite(sphere2, filename = sphere2_name)
 
       sphere1_vec = rep(0,dim(sphere1$vb)[2])
       sphere2_vec = rep(0,dim(sphere1$vb)[2])
@@ -151,8 +152,8 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
       sphere1_vec[total_closest_points_class1] = 1
       sphere2_vec[total_closest_points_class2] = 1
 
-      write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
-      write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
+      utils::write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
+      utils::write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
     }
 
 
@@ -520,14 +521,14 @@ generate_data_gaussian_field <- function(nsim, curve_length, dir, shared_points 
 
 
   #Shared points
-  n1=runif(shared_points,-1,1)
-  n2=runif(shared_points,-1,1)
+  n1=stats::runif(shared_points,-1,1)
+  n2=stats::runif(shared_points,-1,1)
 
   #causal points
-  x1=runif(causal_points,-1,1)
-  y1=runif(causal_points,-1,1)
-  x2=runif(causal_points,-1,1)
-  y2=runif(causal_points,-1,1)
+  x1=stats::runif(causal_points,-1,1)
+  y1=stats::runif(causal_points,-1,1)
+  x2=stats::runif(causal_points,-1,1)
+  y2=stats::runif(causal_points,-1,1)
 
   noise_points=cbind(n1,n2)
   causal_points1=cbind(x1,y1)
@@ -821,7 +822,7 @@ generate_random_field_matrix <- function(grid_length, points, normal_std){
   function_values <- matrix(apply(grid, 1, field_values), nrow = grid_length, byrow = TRUE)
 
   # add some noise to the grid values
-  function_values + matrix(runif(grid_length^2, min=-0.1, max=0.1), nrow = grid_length)
+  function_values + matrix(stats::runif(grid_length^2, min=-0.1, max=0.1), nrow = grid_length)
 }
 
 # Generates a function that is the sum of normals centered at inputted points, with

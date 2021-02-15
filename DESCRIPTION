@@ -37,7 +37,8 @@ Imports:
     doParallel,
     svd,
     functional,
-    rdist
+    rdist,
+    foreach
 Suggests: 
     testthat,
     knitr,

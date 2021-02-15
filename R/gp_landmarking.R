@@ -4,9 +4,9 @@
 
 compute_curvature = function(vertices, k){
   points = t(vertices)
-  n = knnx.index(points,points,k+1)
+  n = FNN::knnx.index(points,points,k+1)
   n = n[,-1]
-  p = repmat(points,k,1) - points[as.vector(n),]
+  p = pracma::repmat(points,k,1) - points[as.vector(n),]
   p = array(p,dim = c(dim(points)[1],k,3))
   nv = dim(points)[1]
 
