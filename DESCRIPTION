@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: c(person("Bruce", "Wang", email = "bruce.waang55@gmail.com", role = c("aut", "cre")),
 			person("Timothy","Sudijono", email = "ts3.14159265@gmail.com", role = c("aut")),
 			person("Lorin","Crawford", email = "lorin_crawford@brown.edu", role = c("aut")))
-Description: Framework for feature selection and association mapping using topological summary statistics.
+Description: Framework for feature selection and association mapping 
+  using topological summary statistics.
 Depends: R (>= 3.4.3)
 License: GPL (>= 3)
 Encoding: UTF-8

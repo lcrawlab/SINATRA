@@ -4,3 +4,4 @@
 ^\.Rhistory$
 ^R/\.Rhistory$
 ^\.gitignore$
+^.git
