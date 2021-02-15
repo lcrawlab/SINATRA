@@ -5,3 +5,6 @@
 ^R/\.Rhistory$
 ^\.gitignore$
 ^.git
+^sinatra\.Rproj$
+^\.github$
+^README\.Rmd$

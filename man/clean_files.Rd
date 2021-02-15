@@ -9,7 +9,7 @@ clean_files(input_dir, output_dir)
 \arguments{
 \item{input_dir}{The input directory of the files to scale & translate.}
 
-\item{output_dir}{The output diirectory to put the files post scaling and translating.}
+\item{output_dir}{The output directory to put the files post scaling and translating.}
 }
 \value{
 None; files written in output path.

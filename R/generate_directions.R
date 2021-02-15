@@ -32,7 +32,7 @@ generate_equidistributed_cones <- function(num_directions, cap_radius, direction
 }
 generate_random_cones <- function(num_directions,cap_radius,directions_per_cone){
   # uniformly generate random directions on the sphere
-  cones <- matrix(rnorm(3*num_directions),ncol = 3)
+  cones <- matrix(stats::rnorm(3*num_directions),ncol = 3)
 
   # renormalize these directions
   cones <- t(apply(cones, 1, function(x) x/sqrt(sum(x*x))))

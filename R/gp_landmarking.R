@@ -1,10 +1,4 @@
 #### Rough Implementation of GP Landmarking ####
-library(Rvcg)
-library(Matrix)
-library(FNN)
-library(pracma)
-# This is basically an R implentation of getting Gaussian Process Landmarks
-
 #### Compute Curvatures ####
 
 

@@ -12,22 +12,20 @@
 
 
 RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.var =1, rank.r = min(nrow(X),ncol(X)), nullify = NULL,snp.nms = NULL, cores = 1){
-
-  ### Install the necessary libraries ###
-  usePackage("doParallel")
-  usePackage("MASS")
-  usePackage("Matrix")
-  usePackage("svd")
-
+  j = NULL
+  rm(list="j")
   ### Determine the number of Cores for Parallelization ###
   if(cores > 1){
-    if(cores>detectCores()){warning("The number of cores you're setting is larger than detected cores!");cores = detectCores()}
+    if (cores>parallel::detectCores()) {
+      warning("The number of cores you're setting is larger than detected cores!");
+      cores = parallel::detectCores()
+    }
   }
 
   ### Register those Cores ###
-  cl = makeCluster(cores-1)
+  cl = parallel::makeCluster(cores-1)
   #  registerDoParallel(cores=cores)
-  registerDoParallel(cl,cores = (cores-1))
+  doParallel::registerDoParallel(cl,cores = (cores-1))
 
 
   if(pre.specify == FALSE){
@@ -35,7 +33,7 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
     if(is.null(f.draws)){stop("The function draws have not been specified!")}
 
     ### Take the SVD of the Design Matrix for Low Rank Approximation ###
-    svd_X = propack.svd(X,rank.r);
+    svd_X = svd::propack.svd(X,rank.r);
     dx = svd_X$d > 1e-10
     px = cumsum(svd_X$d^2/sum(svd_X$d^2)) < prop.var
     r_X = dx&px
@@ -43,13 +41,13 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
     v = svd_X$v[,r_X]
 
     # Now, calculate Sigma_star
-    SigmaFhat = cov(f.draws)
+    SigmaFhat = stats::cov(f.draws)
     Sigma_star = u %*% SigmaFhat %*% t(u)
 
     # Now, calculate U st Lambda = U %*% t(U)
-    svd_Sigma_star = propack.svd(Sigma_star,rank.r)
+    svd_Sigma_star = svd::propack.svd(Sigma_star,rank.r)
     r = svd_Sigma_star$d > 1e-10
-    U = t(ginv(v)) %*% with(svd_Sigma_star, t(1/sqrt(d[r])*t(u[,r])))
+    U = t(MASS::ginv(v)) %*% with(svd_Sigma_star, t(1/sqrt(d[r])*t(u[,r])))
 
     ### Create Lambda ###
     Lambda = tcrossprod(U)
@@ -61,7 +59,7 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
 
     if(length(l)>0){int = int[-l]}
 
-    KLD = foreach(j = int, .combine='c')%dopar%{
+    KLD = foreach::foreach(j = int, .combine='c')%dopar%{
       q = unique(c(j,l))
       m = mu[q]
       U_Lambda_sub = qr.solve(U[-q,],Lambda[-q,q,drop=FALSE])
@@ -75,8 +73,8 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
     if(is.null(beta.draws)){stop("The effect size draws have not been specified!")}
 
     ### Specify the Effect Size Information ###
-    Sigma_star = cov(beta.draws)
-    svd_Sigma_star = propack.svd(Sigma_star,rank.r)
+    Sigma_star = stats::cov(beta.draws)
+    svd_Sigma_star = svd::propack.svd(Sigma_star,rank.r)
     r = svd_Sigma_star$d > 1e-10
     U = with(svd_Sigma_star, t(1/sqrt(d[r])*t(u[,r])))
 
@@ -89,7 +87,7 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
 
     if(length(l)>0){int = int[-l]}
 
-    KLD = foreach(j = int, .combine='c')%dopar%{
+    KLD = foreach::foreach(j = int, .combine='c')%dopar%{
       q = unique(c(j,l))
       m = mu[q]
       U_Lambda_sub = qr.solve(U[-q,],Lambda[-q,q,drop=FALSE])
@@ -110,15 +108,7 @@ RATE = function(X, f.draws = NULL, pre.specify = FALSE, beta.draws = NULL, prop.
   ESS = 1/(1+Delta)*100
 
   ### Return a list of the values and results ###
-  stopCluster(cl)
+  parallel::stopCluster(cl)
   return(list("KLD"=KLD,"RATE"=RATE,"Delta"=Delta,"ESS"=ESS))
 }
 
-### Define the Package ###
-#' Use package
-#' @export
-usePackage <- function(p){
-  if (!is.element(p, installed.packages()[,1]))
-    install.packages(p, dep = TRUE)
-  require(p, character.only = TRUE)
-}

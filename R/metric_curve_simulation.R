@@ -106,7 +106,7 @@ compute_metrics_vertex <- function(data_points,class_1_causal_points,class_2_cau
     combined_false_vertices = setdiff(1:num_vertices, combined_true_vertices)
 
     rate_ROC <- matrix(0,nrow = 1,ncol = 2)
-    for (threshold in quantile(rate_values,probs = seq(1,0,length.out = floor(length(rate_values)/5)) ) ){
+    for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = floor(length(rate_values)/5)) ) ){
 
       rate_positive_vertices <- compute_selected_vertices_cones(dir = directions, complex = complex, rate_vals = rate_values,
                                                                 len = curve_length, threshold = threshold,
@@ -145,8 +145,8 @@ compute_metrics_feature <- function(data_points,class_1_causal_points,class_2_ca
     predictions2=rbf_on_grid(grid_size=grid_size,func=rbf_gauss,data=data_points[[j+1]],eta=eta)
 
     #Produce the Simplicial Complex
-    complex1=MatrixtoSimplicialComplexTriangular(predictions1,grid_length=grid_size)
-    complex2=MatrixtoSimplicialComplexTriangular(predictions2,grid_length=grid_size)
+    complex1=matrix_to_simplicial_complex(predictions1,grid_length=grid_size)
+    complex2=matrix_to_simplicial_complex(predictions2,grid_length=grid_size)
 
     #Starting to Compute the ROC curve for a given complex
     class_1_true_vertices = c()
@@ -189,7 +189,7 @@ compute_metrics_feature <- function(data_points,class_1_causal_points,class_2_ca
     if (length(positive_features) == 0 || length(negative_features) == 0){
       next
     }
-    for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
+    for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
       selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
       #rate_positive_features = c(empty_list,intersect(positive_features, selected_features))
@@ -230,8 +230,8 @@ compute_metrics_cone <- function(data_points,class_1_causal_points,class_2_causa
     predictions2=rbf_on_grid(grid_size=grid_size,func=rbf_gauss,data=data_points[[j+1]],eta=eta)
 
     #Produce the Simplicial Complex
-    complex1=MatrixtoSimplicialComplexTriangular(predictions1,grid_length=grid_size)
-    complex2=MatrixtoSimplicialComplexTriangular(predictions2,grid_length=grid_size)
+    complex1=matrix_to_simplicial_complex(predictions1,grid_length=grid_size)
+    complex2=matrix_to_simplicial_complex(predictions2,grid_length=grid_size)
 
     #Starting to Compute the ROC curve for a given complex
     class_1_true_vertices = c()
@@ -306,7 +306,7 @@ compute_metrics_cone <- function(data_points,class_1_causal_points,class_2_causa
       remove = c(remove,((j+1)/2))
       next
     }
-    for (threshold in quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
+    for (threshold in stats::quantile(rate_values,probs = seq(1,0,length.out = length(rate_values)))){
       selected_features = matrix(ordered_rate_values[(which(ordered_rate_values[,2]>=threshold)),],ncol=2)[,1]
 
       rate_positive_reconstructions = c()

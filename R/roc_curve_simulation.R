@@ -1,7 +1,3 @@
-library(numbers)
-library(stringr)
-
-
 mesh_to_matrix = function(mesh){
   v_points = mesh$vb[-4,]
   x = c(v_points)
@@ -239,7 +235,6 @@ generate_ROC_with_coned_directions <- function(nsim = 10, curve_length = 25, gri
   if (mode == 'sphere_baseline'){
     rate_values = abs(find_elastic_variables(ec_curve_data,weights = TRUE, alpha = alpha))
     rate_values[,1] = rep((1:(dim(rate_values)[1]/3)),each = 3)
-    library(dplyr)
     df = as.data.table(rate_values)
     new_df = aggregate(df[,2],list(df$V1),reduce)
     rate_values = new_df$V2
@@ -308,7 +303,7 @@ generate_ROC_with_coned_directions <- function(nsim = 10, curve_length = 25, gri
                                                   curve_length = curve_length, distance_to_causal_point = distance_to_causal_point, rate_values = rate_values, grid_size = grid_size,
                                                   eta = eta, directions_per_cone = directions_per_cone, class = 0, truncated = truncated,
                                                   ball = ball, ball_radius = ball_radius,
-                                                  dir = directions, radius = radius,mode = mode, subdivision = subdivision)
+                                                  directions = directions, radius = radius,mode = mode, subdivision = subdivision)
     roc_curve = cbind(roc_curve,(1:dim(roc_curve)[1]))
     return(roc_curve)
   }
@@ -820,8 +815,8 @@ compute_roc_curve_features <- function(data,class_1_causal_points,class_2_causal
       predictions2=rbf_on_grid(grid_size=grid_size,func=rbf_gauss,data=data_points[[j+1]],eta=eta)
 
       #Produce the Simplicial Complex
-      complex1=MatrixtoSimplicialComplexTriangular(predictions1,grid_length=grid_size)
-      complex2=MatrixtoSimplicialComplexTriangular(predictions2,grid_length=grid_size)
+      complex1=matrix_to_simplicial_complex(predictions1,grid_length=grid_size)
+      complex2=matrix_to_simplicial_complex(predictions2,grid_length=grid_size)
 
       #Starting to Compute the ROC curve for a given complex
       class_1_true_vertices = c()
@@ -988,8 +983,8 @@ compute_roc_curve_cones <- function(data,class_1_causal_points,class_2_causal_po
       predictions2=rbf_on_grid(grid_size=grid_size,func=rbf_gauss,data=data_points[[j+1]],eta=eta)
 
       #Produce the Simplicial Complex
-      complex1=MatrixtoSimplicialComplexTriangular(predictions1,grid_length=grid_size)
-      complex2=MatrixtoSimplicialComplexTriangular(predictions2,grid_length=grid_size)
+      complex1=matrix_to_simplicial_complex(predictions1,grid_length=grid_size)
+      complex2=matrix_to_simplicial_complex(predictions2,grid_length=grid_size)
 
       #Starting to Compute the ROC curve for a given complex
       class_1_true_vertices = c()
@@ -1187,7 +1182,7 @@ compute_roc_curve_cones <- function(data,class_1_causal_points,class_2_causal_po
 #'
 #' @param data_dir1 (string) : Location of the first class of meshes.
 #' @param data_dir2 (string) : Location of the second class of meshes.
-#' @param gamma (float) : The value at which if a vertex has transition probability greater than $\gamma$, then the vertex is considered causal.
+#' @param gamma (float) : The value at which if a vertex has transition probability greater than \eqn{\gamma}, then the vertex is considered causal.
 #' @param class_1_probs (vector/matrix) : The vector/matrix of transition probibilities to propogate the weights for class 1 shapes.
 #' @param class_2_probs (vector/matrix) : The vector/matrix of transition probibilities to propogate the weights for class 2 shapes.
 #' @param rate_values (vector) : Vector of variable importances for each sub-level set across each direction in a given cone.
@@ -1243,7 +1238,7 @@ compute_roc_curve_teeth = function(data_dir1, data_dir2, gamma, class_1_probs, c
 #'and also the vector of transition probabilities for the caricaturization procedure.
 #'
 #' @param data_dir (string) : Location of the meshes.
-#' @param gamma (float) : The value at which if a vertex has transition probability greater than $\gamma$, then the vertex is considered causal.
+#' @param gamma (float) : The value at which if a vertex has transition probability greater than \eqn{\gamma}, then the vertex is considered causal.
 #' @param class_1_probs (vector/matrix) : The vector/matrix of transition probibilities to propogate the weights for class 1 shapes.
 #' @param class_2_probs (vector/matrix) : The vector/matrix of transition probibilities to propogate the weights for class 2 shapes.
 #' @param rate_values (vector) : Vector of variable importances for each sub-level set across each direction in a given cone.

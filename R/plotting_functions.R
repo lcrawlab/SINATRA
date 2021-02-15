@@ -1,9 +1,3 @@
-#library(RColorBrewer)
-#library(Rvcg)
-#library(pracma)
-#library(matlib)
-#library(rgl)
-
 #' Convert Mesh3d File to List
 #' @description  converts a mesh3d file to a list format that's more friendly to our ECT functions.
 #' @export
@@ -146,13 +140,13 @@ get_heat_colors = function(dir_name, cuts, pset, comp, colfunc){
 color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title='') {
   scale = (length(lut)-1)/(max-min)
 
-  dev.new(width=1, height=5)
-  par(mar=c(5,6,4,1)+.1)
+  grDevices::dev.new(width=1, height=5)
+  graphics::par(mar=c(5,6,4,1)+.1)
   plot(c(0,10), c(min,max), type='n', bty='n', xaxt='n', xlab='', yaxt='n', ylab='', main=title)
-  axis(2, ticks, las=1,cex.axis = 1.4)
+  graphics::axis(2, ticks, las=1,cex.axis = 1.4)
   for (i in 1:(length(lut)-1)) {
     y = (i-1)/scale + min
-    rect(0,y,10,y+1/scale, col=lut[i], border=NA)
+    graphics::rect(0,y,10,y+1/scale, col=lut[i], border=NA)
   }
 }
 #------------------------------------------------------------------------------------------------------------------------------#
@@ -169,7 +163,7 @@ vertex_to_projections <- function(vertex, dirs, curve_length,ball_radius){
   f <- functional::Curry(vertex_to_dir_projection, vertex = vertex, dirs = dirs,
                          curve_length = curve_length, ball_radius = ball_radius)
 
-  purrr::map_int(1:(dim(dirs)[1]), f)
+  sapply(1:(dim(dirs)[1]), f)
 }
 
 # idx represents the index in the set of directions
@@ -233,14 +227,14 @@ plot_results_teeth_simple=function(files, features1, features2, color1, color2, 
     vert2 =  compute_selected_vertices_cones(dir = dir2, complex =file_1, rate_vals = features2, len = len, threshold = (thresh/(length(features2))),
                                              cone_size = directions_per_cone,ball_radius = ball_radius, ball = FALSE)
     intersected = intersect(vert1,vert2)
-    fc3 <- colorRampPalette(c(color1,color2))
+    fc3 <- grDevices::colorRampPalette(c(color1,color2))
     colors = rep('white', dim(veg1$vb)[2])
     colors[setdiff(vert1,vert2)] =fc3(10)[2]
     colors[setdiff(vert2,vert1)] =fc3(10)[9]
     colors[intersected] = fc3(10)[6]
-    plot3d(file1, colors = colors,axes = FALSE, xlab = '',ylab = '', zlab = '')
+    rgl::plot3d(file1, colors = colors,axes = FALSE, xlab = '',ylab = '', zlab = '')
     #Rotate the tooth for a view of the 'bottom'
     rotation_matrix=matrix(c(0.99972576,0.02127766,0.00978078,0,0.01589701,-0.92330807,0.38373107,0,0.01719557,-0.38347024,-0.92339307,0,0,0,0,1),ncol=4,byrow=TRUE)
-    rgl.viewpoint(userMatrix = rotation_matrix)
+    rgl::rgl.viewpoint(userMatrix = rotation_matrix)
   }
 }

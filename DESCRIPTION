@@ -9,34 +9,38 @@ Description: Framework for feature selection and association mapping
 Depends: R (>= 3.4.3)
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
 Imports:
-	rgl,
-	Rvcg,
-	RColorBrewer,
-	pracma,
-	far,
-	matlib,
-	Matrix,
-	FastGP,
-	mvtnorm,
-	FNN,
-	Morpho,
-	Rcpp,
-	truncnorm,
-	plyr,
-	pdist,
-	reshape2,
-	MASS,
-	parallel,
-	numbers,
-	Rcgmin,
-	glmnet,
-  gglasso,
-  stringr
+    rgl,
+    Rvcg,
+    RColorBrewer,
+    pracma,
+    far,
+    matlib,
+    Matrix,
+    FastGP,
+    mvtnorm,
+    FNN,
+    Morpho,
+    Rcpp,
+    truncnorm,
+    plyr,
+    pdist,
+    reshape2,
+    MASS,
+    parallel,
+    numbers,
+    Rcgmin,
+    glmnet,
+    gglasso,
+    stringr,
+    doParallel,
+    svd,
+    functional,
+    rdist
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    dplyr
 VignetteBuilder: knitr

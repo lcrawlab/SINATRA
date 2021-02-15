@@ -1,6 +1,3 @@
-library(Rvcg)
-library(glmnet)
-
 #### Functions to help work with real meshes ####
 
 #' Read in OFF files to list form

@@ -113,27 +113,27 @@ generate_data_sphere_simulation = function(nsim, curve_length, dir, noise_points
     sphere2 = vcgSphere(subdivision = subdivision)
 
     # Add noise to the sphere
-    sphere1$vb[1:3,] = sphere1$vb[1:3,]  * rnorm(dim(sphere1$vb)[2], mean = 1, sd = 0.035)
-    sphere2$vb[1:3,] = sphere2$vb[1:3,]  * rnorm(dim(sphere2$vb)[2], mean = 1, sd = 0.035)
+    sphere1$vb[1:3,] = sphere1$vb[1:3,]  * stats::rnorm(dim(sphere1$vb)[2], mean = 1, sd = 0.035)
+    sphere2$vb[1:3,] = sphere2$vb[1:3,]  * stats::rnorm(dim(sphere2$vb)[2], mean = 1, sd = 0.035)
 
     # Descend the causal regions - Needs to be changed
     for (j in 1:length(causal_regions_1)){
       causal_dir1 = regions[causal_regions_1[j],]
       closest_points_class1 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir1,ncol = 3), k = causal_points)
-      sphere1$vb[1:3,closest_points_class1] = sphere1$vb[1:3,closest_points_class1]  * 0.55 + rnorm(1, mean = 0, sd = 0.1)
+      sphere1$vb[1:3,closest_points_class1] = sphere1$vb[1:3,closest_points_class1]  * 0.55 + stats::rnorm(1, mean = 0, sd = 0.1)
     }
 
     for (j in 1:length(causal_regions_2)){
       causal_dir2 = regions[causal_regions_2[j],]
       closest_points_class2 = knnx.index(data = t(sphere$vb[-4,]),query = matrix(causal_dir2,ncol = 3), k = causal_points)
-      sphere2$vb[1:3,closest_points_class2] = sphere2$vb[1:3,closest_points_class2]  * 0.55 + rnorm(1, mean = 0, sd = 0.1)
+      sphere2$vb[1:3,closest_points_class2] = sphere2$vb[1:3,closest_points_class2]  * 0.55 + stats::rnorm(1, mean = 0, sd = 0.1)
     }
 
     # Elevate the shared regions - Needs to be changed
     for (k in 1:length(shared_regions)){
       shared_dir = regions[shared_regions[k],]
       closest_points_shared = knnx.index(data = t(sphere$vb[-4,]),query = matrix(shared_dir,ncol = 3), k = noise_points)
-      shared_points = sphere$vb[1:3,closest_points_shared]  * 1.35 + rnorm(1, mean = 0, sd = 0.1)
+      shared_points = sphere$vb[1:3,closest_points_shared]  * 1.35 + stats::rnorm(1, mean = 0, sd = 0.1)
       sphere1$vb[1:3,closest_points_shared] = shared_points
       sphere2$vb[1:3,closest_points_shared] = shared_points
 
@@ -306,16 +306,16 @@ generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, no
     }
     sphere1 = vcgSphere(subdivision = subdivision)
     sphere2 = vcgSphere(subdivision = subdivision)
-    sphere1$vb[1:3, ] = sphere1$vb[1:3, ] * rnorm(dim(sphere1$vb)[2],
+    sphere1$vb[1:3, ] = sphere1$vb[1:3, ] * stats::rnorm(dim(sphere1$vb)[2],
                                                   mean = 1, sd = 0.035)
-    sphere2$vb[1:3, ] = sphere2$vb[1:3, ] * rnorm(dim(sphere2$vb)[2],
+    sphere2$vb[1:3, ] = sphere2$vb[1:3, ] * stats::rnorm(dim(sphere2$vb)[2],
                                                   mean = 1, sd = 0.035)
     for (j in 1:length(causal_regions_1)) {
       causal_dir1 = regions[causal_regions_1[j], ]
       closest_points_class1 = knnx.index(data = t(sphere$vb[-4,
                                                             ]), query = matrix(causal_dir1, ncol = 3), k = causal_points)
       sphere1$vb[1:3, closest_points_class1] = sphere1$vb[1:3,
-                                                          closest_points_class1] * 0.55 + rnorm(1, mean = 0,
+                                                          closest_points_class1] * 0.55 + stats::rnorm(1, mean = 0,
                                                                                                 sd = 0.1)
     }
     for (j in 1:length(causal_regions_2)) {
@@ -323,7 +323,7 @@ generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, no
       closest_points_class2 = knnx.index(data = t(sphere$vb[-4,
                                                             ]), query = matrix(causal_dir2, ncol = 3), k = causal_points)
       sphere2$vb[1:3, closest_points_class2] = sphere2$vb[1:3,
-                                                          closest_points_class2] * 0.55 + rnorm(1, mean = 0,
+                                                          closest_points_class2] * 0.55 + stats::rnorm(1, mean = 0,
                                                                                                 sd = 0.1)
     }
     for (k in 1:length(shared_regions)) {
@@ -331,7 +331,7 @@ generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, no
       closest_points_shared = knnx.index(data = t(sphere$vb[-4,
                                                             ]), query = matrix(shared_dir, ncol = 3), k = noise_points)
       shared_points = sphere$vb[1:3, closest_points_shared] *
-        1.35 + rnorm(1, mean = 0, sd = 0.1)
+        1.35 + stats::rnorm(1, mean = 0, sd = 0.1)
       sphere1$vb[1:3, closest_points_shared] = shared_points
       sphere2$vb[1:3, closest_points_shared] = shared_points
     }
@@ -493,9 +493,9 @@ create_data_normal_fixed = function(num_sim=25,dir,curve_length=10,shared_points
 #'
 #' @return complex (list) : List of data containing the mesh versions of the interpolated shapes, causal points, and the shared points.
 generate_normal_complex_fixed=function(grid_size=25,noise_points,causal_points1,causal_points2,func=rbf_gauss,eta=5){
-  noise=cbind(noise_points,rnorm(dim(noise_points)[1],1,0.25))
-  samples1=cbind(causal_points1,rnorm(dim(causal_points1)[1],1,0.25))
-  samples2=cbind(causal_points2,rnorm(dim(causal_points2)[1],1,0.25))
+  noise=cbind(noise_points,stats::rnorm(dim(noise_points)[1],1,0.25))
+  samples1=cbind(causal_points1,stats::rnorm(dim(causal_points1)[1],1,0.25))
+  samples2=cbind(causal_points2,stats::rnorm(dim(causal_points2)[1],1,0.25))
 
   real_samples1=rbind(samples1,noise)
   real_samples2=rbind(samples2,noise)

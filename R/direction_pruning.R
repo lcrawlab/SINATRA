@@ -7,7 +7,7 @@ compute_total_correlations <- function(data,num_cones, curve_length, dir_per_con
     # test the correlations of only the central directions
     central_dir_index <- i*curve_length*dir_per_cone
     ec_curves <- data[,(central_dir_index+1):(central_dir_index + curve_length)]
-    median_correlations[i+1] <- median(cor(t(ec_curves)))
+    median_correlations[i+1] <- stats::median(stats::cor(t(ec_curves)))
   }
   return(median_correlations)
 }
@@ -21,9 +21,9 @@ compute_cone_class_correlations <- function(data, cone, curve_length, dir_per_co
   class_2_ec_curves <- data[seq(2,num_data,2),(central_dir_index+1):(central_dir_index + curve_length)]
 
 
-  class_1_correlations <- cor(t(class_1_ec_curves))
-  class_2_correlations <- cor(t(class_2_ec_curves))
-  interclass_correlations <- cor(t(class_1_ec_curves),t(class_2_ec_curves))
+  class_1_correlations <- stats::cor(t(class_1_ec_curves))
+  class_2_correlations <- stats::cor(t(class_2_ec_curves))
+  interclass_correlations <- stats::cor(t(class_1_ec_curves),t(class_2_ec_curves))
 
   return(list(class1 = class_1_correlations, class2 = class_2_correlations, inter = interclass_correlations))
 }
@@ -120,7 +120,7 @@ find_directions_with_power <- function(runs = 1, nsim = 50, curve_length = 10, g
         break
       }
       else{
-        cors =  median(cor(t(data$data[,-1])))
+        cors =  stats::median(stats::cor(t(data$data[,-1])))
         #Indices for Two Clases
         index1 = seq(1,2*nsim,2)
         complex_data1 = data$data[index1,-1]
@@ -128,8 +128,8 @@ find_directions_with_power <- function(runs = 1, nsim = 50, curve_length = 10, g
         index2 = seq(2,2*nsim,2)
         complex_data2 = data$data[index2,-1]
 
-        class1_cor = c(class1_cor, median(cor(t(complex_data1))))
-        class2_cor = c(class2_cor, median(cor(t(complex_data2))))
+        class1_cor = c(class1_cor, stats::median(stats::cor(t(complex_data1))))
+        class2_cor = c(class2_cor, stats::median(stats::cor(t(complex_data2))))
         total_cor  = c(total_cor, cors)
         next
         # If we want to assess accuracy too, remove the next.
@@ -152,9 +152,9 @@ find_directions_with_power <- function(runs = 1, nsim = 50, curve_length = 10, g
         }
       }
     }
-    dir_powers[i,4] = median(class1_cor)
-    dir_powers[i,5] = median(class2_cor)
-    dir_powers[i,6] = median(total_cor)
+    dir_powers[i,4] = stats::median(class1_cor)
+    dir_powers[i,5] = stats::median(class2_cor)
+    dir_powers[i,6] = stats::median(total_cor)
   }
   return(dir_powers)
 }

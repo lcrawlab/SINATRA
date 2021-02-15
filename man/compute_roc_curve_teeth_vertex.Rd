@@ -25,7 +25,7 @@ compute_roc_curve_teeth_vertex(
 \arguments{
 \item{data_dir}{(string) : Location of the meshes.}
 
-\item{gamma}{(float) : The value at which if a vertex has transition probability greater than $\gamma$, then the vertex is considered causal.}
+\item{gamma}{(float) : The value at which if a vertex has transition probability greater than \eqn{\gamma}, then the vertex is considered causal.}
 
 \item{class_1_probs}{(vector/matrix) : The vector/matrix of transition probibilities to propogate the weights for class 1 shapes.}
 

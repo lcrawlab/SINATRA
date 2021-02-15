@@ -1,8 +1,3 @@
-library(Matrix)
-library(FastGP)
-library(parallel)
-
-
 ####### RATE Code ######
 
 #' Gaussian Kernel Implementation
@@ -194,8 +189,8 @@ ExpectationPropagation <- function(K, class_labels){
 
       # Compute Marginal Moments
       z_i <- class_labels[i]*mu_minus[i]/(sqrt(1+sigma_minus[i]^2))
-      mu_hat[i] <- mu_minus[i] + (class_labels[i] * sigma_minus[i]^2 * dnorm(z_i) )/(pnorm(z_i)*sqrt(1+sigma_minus[i]^2))
-      sigma_hat[i] <- sqrt( sigma_minus[i]^2 - (sigma_minus[i]^4*dnorm(z_i))/((1+sigma_minus[i]^2)*pnorm(z_i))*(z_i + dnorm(z_i)/pnorm(z_i)) )
+      mu_hat[i] <- mu_minus[i] + (class_labels[i] * sigma_minus[i]^2 * stats::dnorm(z_i) )/(stats::pnorm(z_i)*sqrt(1+sigma_minus[i]^2))
+      sigma_hat[i] <- sqrt( sigma_minus[i]^2 - (sigma_minus[i]^4*stats::dnorm(z_i))/((1+sigma_minus[i]^2)*stats::pnorm(z_i))*(z_i + stats::dnorm(z_i)/stats::pnorm(z_i)) )
 
       # Update Site Parameters
       delta_tau_tilde <- sigma_hat[i]^-2 - tau_minus[i] - tau_tilde[i]
@@ -219,7 +214,7 @@ ExpectationPropagation <- function(K, class_labels){
   B <- diag(n) + sqrt(S_tilde) %*% K %*% sqrt(S_tilde)
   T <- diag(as.vector(tau_minus))
   term1 <- 0.5*sum(log(1 + tau_tilde/tau_minus)) - sum(log(diag(L)))
-  term2 <- 0.5*sum(log(pnorm(class_labels*mu_minus)/sqrt(1 + sigma_minus^2)))
+  term2 <- 0.5*sum(log(stats::pnorm(class_labels*mu_minus)/sqrt(1 + sigma_minus^2)))
   term3 <- 0.5*t(nu_tilde)%*%(K - K %*% sqrt(S_tilde) %*% solve(B) %*% sqrt(S_tilde) %*% K - (T + solve(S_tilde)) ) %*% (nu_tilde)
   term4 <- 0.5* t(mu_minus)%*% T %*% solve(S_tilde + T) %*% (S_tilde %*% mu_minus - 2*nu_tilde)
 
@@ -310,6 +305,8 @@ Elliptical_Slice_Sampling <- function(K,class_labels,num_mcmc_samples, probit = 
 ############################################################
 ##### Model Selection Code #####
 
+#' Compute Marginal Likelihood Gradient
+#'
 #' @export
 #'
 #' @description \code{compute_marginal_likelihood_gradient} Computes Marginal likeilhood Gradient for the GPC Model, when using Expectation Prop.
@@ -341,6 +338,7 @@ compute_marginal_likelihood_gradient <- function(X, kernel_param, class_labels){
   return(grad_log_Z)
 }
 
+#' Compute Marginal Likelihood
 #'
 #' @export
 #'
@@ -362,9 +360,12 @@ compute_marginal_likelihood <- function(X, kernel_param, class_labels){
   return(log_Z)
 }
 
+#' Pick best kernel parameters
+
 #' @export
 #'
-#' @description \code{optimize_params_EP} Uses nonlinear conjugate gradient optimizer to pick out the best value of the kernel params
+#' @description \code{optimize_params_EP} Uses nonlinear conjugate gradient
+#' optimizer to pick out the best value of the kernel params
 #'
 #' @param X (matrix) : The design matrix of (S/D) EC curves
 #' @param kernel_param (float) : Bandwidth parameter for the Gaussian Kernel
@@ -401,7 +402,7 @@ sigmoid <- function(x){
 #' Probit Log Likelihood
 #' @export
 probit_log_likelihood <- function(latent_variables, class_labels){
-  return(sum(log(pnorm(latent_variables*class_labels))))
+  return(sum(log(stats::pnorm(latent_variables*class_labels))))
 }
 
 #' Probit Log Likelihood
