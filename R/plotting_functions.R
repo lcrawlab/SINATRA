@@ -40,7 +40,7 @@ reconstruct_vertices_on_shape = function(dir, complex, rate_vals, len, cuts=10, 
   vert_matrix = matrix(0,nrow = dim(complex$Vertices)[1], ncol = 2)
   cut = cuts
   reconstructed_vertices = c()
-  for (threshold in quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
+  for (threshold in stats::quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
     if (threshold > max(rate_vals)){
       next
     }
@@ -81,7 +81,7 @@ reconstruct_faces_on_shape = function(dir, complex, rate_vals, len, cuts=10, con
   face_matrix = matrix(0,nrow = dim(complex$Faces)[1], ncol = 2)
   cut = cuts
   reconstructed_faces = c()
-  for (threshold in quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
+  for (threshold in stats::quantile(rate_vals,probs = seq(1,0,length.out = cuts)) ){
     selected_faces = compute_selected_faces_cones(dir = dir, complex = complex, rate_vals = rate_vals, len = len, threshold = threshold,
                                                   cone_size = cone_size,ball_radius = ball_radius, ball = ball, radius = radius)
     selected_faces = setdiff(selected_faces,reconstructed_faces)

@@ -236,7 +236,7 @@ generate_ROC_with_coned_directions <- function(nsim = 10, curve_length = 25, gri
     rate_values = abs(find_elastic_variables(ec_curve_data,weights = TRUE, alpha = alpha))
     rate_values[,1] = rep((1:(dim(rate_values)[1]/3)),each = 3)
     df = as.data.table(rate_values)
-    new_df = aggregate(df[,2],list(df$V1),reduce)
+    new_df = stats::aggregate(df[,2],list(df$V1),reduce)
     rate_values = new_df$V2
   }
   else{
@@ -720,7 +720,7 @@ compute_roc_curve_modified_vertex = function(data,class_1_causal_points,class_2_
 
         rate_negative_vertices <- setdiff(1:num_vertices,rate_positive_vertices)
 
-        TPR_FPR <- calculate_TPR_FPR_cusps(rate_positive_vertices,rate_negative_vertices,
+        TPR_FPR <- calculate_TPR_FPR(rate_positive_vertices,rate_negative_vertices,
                                            total_cusps,false_vertices)
         rate_ROC <- rbind(rate_ROC, TPR_FPR)
       }
@@ -741,7 +741,7 @@ compute_roc_curve_modified_vertex = function(data,class_1_causal_points,class_2_
 
         rate_negative_vertices <- setdiff(1:num_vertices,rate_positive_vertices)
 
-        TPR_FPR <- calculate_TPR_FPR_cusps(rate_positive_vertices,rate_negative_vertices,
+        TPR_FPR <- calculate_TPR_FPR(rate_positive_vertices,rate_negative_vertices,
                                            total_cusps,false_vertices)
         rate_ROC <- rbind(rate_ROC, TPR_FPR)
       }

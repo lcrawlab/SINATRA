@@ -339,8 +339,8 @@ generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, no
     if (write == TRUE){
       sphere1_name = paste(workdir1,'/sphere_',i,'.off',sep = '')
       sphere2_name = paste(workdir2,'/sphere_',i,'.off',sep = '')
-      vcgOffWrite(sphere1, filename = sphere1_name)
-      vcgOffWrite(sphere2, filename = sphere2_name)
+      Rvcg::vcgOffWrite(sphere1, filename = sphere1_name)
+      Rvcg::vcgOffWrite(sphere2, filename = sphere2_name)
 
       sphere1_vec = rep(0,dim(sphere1$vb)[2])
       sphere2_vec = rep(0,dim(sphere1$vb)[2])
@@ -348,8 +348,8 @@ generate_data_sphere_simulation_baseline = function (nsim, curve_length, dir, no
       sphere1_vec[total_closest_points_class1] = 1
       sphere2_vec[total_closest_points_class2] = 1
 
-      write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
-      write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
+      utils::write.csv(sphere1_vec, paste(workdir,'/gp1.csv', sep = ''), row.names = FALSE)
+      utils::write.csv(sphere2_vec, paste(workdir,'/gp2.csv', sep = ''), row.names = FALSE)
 
     }
     sphere_mesh1 = convert_off_file(sphere1)
