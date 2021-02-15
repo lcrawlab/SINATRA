@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.Rhistory$
+^R/\.Rhistory$
+^\.gitignore$
