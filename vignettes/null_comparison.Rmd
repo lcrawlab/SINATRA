@@ -2,7 +2,7 @@
 title: "Null Comparison"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{null_comparison}
+  %\VignetteIndexEntry{Null Comparison}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
