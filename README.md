@@ -172,7 +172,7 @@ full SINATRA pipeline via the following cases:
   - Real data analyses with primate molars.
 
 Other code specific to analyses conducted in the paper can be found in
-the branch repo `AOAS_paper_results`.
+the  repo [SINATRA_AOAS_paper_results](https://github.com/lcrawlab/SINATRA_AoAS_Results). 
 
 ## Questions and Feedback
 
