@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SINATRA 
 
 Sub-Image Analysis using Topological Summary Statistics.
