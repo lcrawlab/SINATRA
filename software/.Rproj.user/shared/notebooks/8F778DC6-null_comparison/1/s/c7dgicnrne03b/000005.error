@@ -1,1 +1,0 @@
-{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"plot3d(obj2, col = vert_heat2, back = \"lines\", specular = \"white\", \n    axes = FALSE, xlab = \"\", ylab = \"\", zlab = \"\")","line_number":0}],"message":"Error in plot3d(obj2, col = vert_heat2, back = \"lines\", specular = \"white\",  : \n  object 'obj2' not found\n"}

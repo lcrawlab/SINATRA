@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.Rhistory$
+^R/\.Rhistory$
+^\.gitignore$
+^.git
+^sinatra\.Rproj$
+^\.github$
+^README\.Rmd$

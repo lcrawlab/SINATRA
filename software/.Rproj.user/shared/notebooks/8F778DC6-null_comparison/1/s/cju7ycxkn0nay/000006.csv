@@ -1,8 +1,0 @@
-"0","dragon <- vcgImport(""dragon.off"")"
-"1","Removed 19 duplicate 0 unreferenced vertices and 0 duplicate faces
-"
-"0","mushroom <- vcgImport(""mushroom.off"")"
-"0",""
-"0","# perturb surface with some noise"
-"0","data <- matrix(NA,nrow=0,ncol = 1+curve_length*( dim(dir)[1]))"
-"0",""

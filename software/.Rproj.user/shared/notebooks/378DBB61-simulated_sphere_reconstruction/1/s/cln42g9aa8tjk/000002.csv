@@ -1,6 +1,0 @@
-"0","# reconstruct birth times of vertices"
-"0","vert_matrix1 <- reconstruct_vertices_on_shape(dir, complex1, rate_values_sim, curve_length, cuts = length(rate_values_sim),"
-"0","                                             directions_per_cone, ball_radius, TRUE)"
-"0",""
-"0","vert_matrix2 <- reconstruct_vertices_on_shape(dir, complex2, rate_values_sim, curve_length, cuts = length(rate_values_sim),"
-"0","                                             directions_per_cone, ball_radius, TRUE)"
