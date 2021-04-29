@@ -928,34 +928,6 @@ compute_roc_curve_features <- function(data,class_1_causal_points,class_2_causal
   return(total_rate_roc)
 }
 
-#'Computes the ROC curve by assessing the overlap of selected bands and causal cone.
-#'
-#' @export
-#'
-#' @description We compute the ROC curve by assessing the overlap of selected features and causal features. A causal cone here
-#' means to have every direction in a given cone that are associated with a causal vertex to be selected.
-#' We do this for every complex in the data set then average the ROC curves.
-#'
-#' @param data (list) : Metadata about the simulated shapes (vertex coordinates, etc.)
-#' @param class_1_causal_points : Vertex indices of causal points for class 1.
-#' @param class_2_causal_points : Vertex indices of causal points for class 2.
-#' @param distance_to_causal_point (float) : For interpolated shapes, the distance from a vertex to the causal points to be considered a "causal vertex"
-#' @param rate_values (vector) : Vector of variable importances for each sub-level set across each direction in a given cone.
-#' @param grid_size (int) : The fine-ness/granularity of the interpolated shapes.
-#' @param eta (float) : The kernel shape parameter.
-#' @param directions_per_cone (int): The number of directions we want generated within each cone.
-#' @param curve_length (int) : Number of sub-level sets in each EC computation.
-#' @param truncated (int) : The number of "cuts" to compute TPR/FPR for the ROC curve over. Used to speed up ROC computations.
-#' @param class (int) : The class of the group of shapes we compute the ROC curve against.
-#' @param ball (boolean) : Denotes whether or not to compute the EC curves over a ball for uniform measurements
-#' @param ball_radius (float) : The radius of the bounding ball used if we compute the balled EC curve.
-#' @param dir (nx3 matrix):  The matrix of directions for which the (S/D) EC curve were computed over.
-#' @param min_points (int) : Used when type = 'feature'. The mininum number of causal vertices for a sub-level set to be associated with to be considered a causal 'feature'.
-#' @param mode (string) : The data generation scheme. We currently support 'sphere', 'gaussian_grid", or interpolations (default).
-#' @param subdivision (int) : The fineness of the sphere meshes (if mode == 'sphere'). We currently use subdivision = 3.
-#'
-#' @return ROC_dataframe (dataframe) : The ROC curve in Dataframe form.
-
 #'Computes the averaged ROC curve of caricatured teeth.
 #'
 #' @export
