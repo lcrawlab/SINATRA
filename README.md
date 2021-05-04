@@ -28,7 +28,7 @@ Code for implementing the SINATRA pipeline was written in R (version 3.5.3). As 
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/muschellij2/SINATRA/workflows/R-CMD-check/badge.svg)](https://github.com/muschellij2/SINATRA/actions)
+[![R-CMD-check](https://github.com/lcrawlab/SINATRA/workflows/R-CMD-check/badge.svg)](https://github.com/lcrawlab/SINATRA/actions)
 <!-- badges: end -->
 
 # SINATRA
