@@ -1,39 +1,11 @@
-# SINATRA 
+# SINATRA
 
 Sub-Image Analysis using Topological Summary Statistics.
-
-## Introduction
-
-The sub-image selection problem is to identify physical regions that most explain the variation between two classes of three dimensional shapes. SINATRA is a statistical pipeline for carrying out sub-image analyses using topological summary statistics. The algorithm follows four key steps:
-
-1. 3D shapes (represented as triangular meshes) are summarized by a collection of vectors (or curves) detailing their topology (e.g. Euler characteristics, persistence diagrams). 
-2. A statistical model is used to classify the shapes based on their topological summaries. Here, we make use of a Gaussian process classification model with a probit link function.
-3. After itting the model, an association measure is computed for each topological feature (e.g. centrality measures, posterior inclusion probabilities, p-values, etc).
-4. Association measures are mapped back onto the original shapes via a reconstruction algorithm — thus, highlighting evidence of the physical (spatial) locations that best explain the variation between the two groups.
-
-Through detailed simulations, we assess the power of our algorithm as a function of its inputs. Lastly, as an application of our pipeline, we conduct feature selection on a dataset consisting of mandibular molars from different genera of New World Monkeys and examine the physical properties of their teeth that summarize their phylogeny. 
-
-## Package Details and Requirements
-
-Code for implementing the SINATRA pipeline was written in R (version 3.5.3). As part of this procedure:
-
-1. Inference for the Gaussian process classification (GPC) model was done using elliptical slice sampling (Murray, Prescott, and MacKay 2010) and carried out with the R package [FastGP](https://cran.r-project.org/web/packages/FastGP/index.html) (version 1.2).
-2. Next association measures are computed for the Euler characteristic curves. While our pipeline is flexible and any feature selection algorithm can be implemented, we use the relative centrality criterion ([RATE](https://github.com/lorinanthony/RATE)), which is a variable selection measure for nonlinear and nonparametric statistical methods (Crawford et al. 2019; Ish-Horowicz et al. 2019). Alternative methods implemented include the [elastic net](https://cran.r-project.org/web/packages/elasticnet/elasticnet.pdf) (Zou and Hastie 2003) and Bayesian variable selection using variational inference ([varbvs](https://cran.r-project.org/web/packages/varbvs/index.html)) (Carbonetto, Zhou, and Stephens 2017).
-3. Visualization of reconstructed regions outputted by SINATRA is done using the package [rgl](https://cran.r-project.org/web/packages/rgl/index.html) (version 0.100.19), and general utility functions for triangular meshes from the package [Rvcg](https://cran.r-project.org/web/packages/Rvcg/index.html) (version 0.18). 
-=======
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# sinatra
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/lcrawlab/SINATRA/workflows/R-CMD-check/badge.svg)](https://github.com/lcrawlab/SINATRA/actions)
 <!-- badges: end -->
-
-# SINATRA
-
-Sub-Image Analysis using Topological Summary Statistics.
 
 ## Introduction
 
@@ -50,7 +22,7 @@ four key steps:
     topological summaries. Here, we make use of a Gaussian process
     classification model with a probit link function.
 3.  After itting the model, an association measure is computed for each
-    topological feature (e.g. centrality measures, posterior inclusion
+    topological feature (e.g., centrality measures, posterior inclusion
     probabilities, p-values, etc).
 4.  Association measures are mapped back onto the original shapes via a
     reconstruction algorithm — thus, highlighting evidence of the
@@ -179,7 +151,7 @@ the  repo [SINATRA_AOAS_paper_results](https://github.com/lcrawlab/SINATRA_AoAS_
 For questions or concerns, please contact [Bruce
 Wang](mailto:bruce.waang55@gmail.com), [Timothy
 Sudijono](mailto:timothy_sudijono@brown.edu), or [Lorin
-Crawford](mailto:lorin_crawford@brown.edu). We appreciate any feedback
+Crawford](mailto:lcrawford@microsoft.com). We appreciate any feedback
 you may have with our repository and instructions.
 
 ## Relevant Citations
