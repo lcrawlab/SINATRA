@@ -159,4 +159,4 @@ you may have with our repository and instructions.
 B. Wang*, T. Sudijono*, H. Kirveslahti\*, T. Gao, D.M. Boyer, S.
 Mukherjee, and L. Crawford. SINATRA: a sub-image analysis pipeline for
 selecting features that differentiate classes of 3D shapes. *Annals of
-Applied Statistics*. In Press.
+Applied Statistics*. **15**(2): 638-661.
