@@ -17,7 +17,7 @@ four key steps:
 
 1.  3D shapes (represented as triangular meshes) are summarized by a
     collection of vectors (or curves) detailing their topology
-    (e.g. Euler characteristics, persistence diagrams).
+    (e.g., Euler characteristics, persistence diagrams).
 2.  A statistical model is used to classify the shapes based on their
     topological summaries. Here, we make use of a Gaussian process
     classification model with a probit link function.
