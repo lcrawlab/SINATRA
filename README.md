@@ -5,7 +5,6 @@ Sub-Image Analysis using Topological Summary Statistics.
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/lcrawlab/SINATRA/workflows/R-CMD-check/badge.svg)](https://github.com/lcrawlab/SINATRA/actions)
-[![Github All Releases](https://img.shields.io/github/downloads/lcrawlab/SINATRA/total.svg)]()
 <!-- badges: end -->
 
 ## Introduction
