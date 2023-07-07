@@ -2,11 +2,6 @@
 
 Sub-Image Analysis using Topological Summary Statistics.
 
-<!-- badges: start -->
-
-[![R-CMD-check](https://github.com/lcrawlab/SINATRA/workflows/R-CMD-check/badge.svg)](https://github.com/lcrawlab/SINATRA/actions)
-<!-- badges: end -->
-
 ## Introduction
 
 The sub-image selection problem is to identify physical regions that
